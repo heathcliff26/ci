@@ -1,0 +1,15 @@
+---
+group:
+  - repos: |
+      heathcliff26/infraspace-savegame-editor@main
+      heathcliff26/containers@main
+      heathcliff26/promremote@main
+      heathcliff26/pi-cluster@main
+      heathcliff26/remote-ops@main
+    files:
+      - source: .github/renovate-bot.json5
+        dest: .github/renovate-bot.json5
+      - source: .editorconfig
+        dest: .editorconfig
+      - source: .vscode/extensions.json
+        dest: .vscode/extensions.json

@@ -1,0 +1,37 @@
+---
+name: "Kubernetes Kubeconform"
+
+on:
+  workflow_call:
+
+env:
+  KUBERNETES_DIR: ./kubernetes
+  SCHEMA_DIR: /home/runner/.datree/crdSchemas
+
+jobs:
+  kubeconform:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: Setup Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Setup Tools
+        shell: bash
+        run: brew install fluxcd/tap/flux kubeconform kustomize
+
+      - name: Download script
+        run: curl -SLO https://raw.githubusercontent.com/heathcliff26/ci/main/scripts/kubeconform.sh && chmod +x kubeconform.sh
+
+      - name: Download CRDs
+        shell: bash
+        run: |
+          mkdir -p ${{ env.SCHEMA_DIR }}
+          flux pull artifact oci://ghcr.io/${{ github.repository_owner }}/manifests/kubernetes-schemas:${{ github.event.repository.name }} \
+              --output=${{ env.SCHEMA_DIR }}
+
+      - name: Run kubeconform
+        shell: bash
+        run: bash ./kubeconform.sh ${{ env.KUBERNETES_DIR }} ${{ env.SCHEMA_DIR }}

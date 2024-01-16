@@ -1,0 +1,41 @@
+---
+name: "Sync Files"
+
+on:
+  workflow_dispatch:
+  workflow_call:
+  push:
+    branches: ["main"]
+    paths:
+      - .github/sync.yaml
+      - .editorconfig
+      - .github/renovate-bot.json5
+      - .vscode/*
+
+jobs:
+  sync:
+    name: Sync Files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@f04aa94d10cf56334d1c580e077ce2e3569e805d # v1.6.3
+        id: app-token
+        with:
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+          owner: "${{ github.repository_owner }}"
+
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          token: "${{ steps.app-token.outputs.token }}"
+
+      - name: Run GitHub File Sync
+        uses: BetaHuhn/repo-file-sync-action@3023dac7ce66c18b119e2012348437eadeaea116 # v1.21.0
+        with:
+          GH_INSTALLATION_TOKEN: "${{ steps.app-token.outputs.token }}"
+          CONFIG_PATH: ".github/sync.yaml"
+          ASSIGNEES: "heathcliff26"
+          COMMIT_EACH_FILE: "false"
+          GIT_EMAIL: "<bot-ahsoka[bot]@users.noreply.github.com>"
+          GIT_USERNAME: "bot-ahsoka[bot]"

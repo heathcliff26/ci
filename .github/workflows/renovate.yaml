@@ -1,0 +1,50 @@
+---
+name: Renovate
+
+on:
+  workflow_call:
+    inputs:
+      dry-run:
+        description: dry-run
+        type: string
+        default: "null"
+        required: false
+      log-level:
+        description: Set log-level
+        type: string
+        default: debug
+        required: false
+      config-file:
+        description: Config file used by renovate
+        type: string
+        default: .github/renovate-bot.json5
+        required: false
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@f04aa94d10cf56334d1c580e077ce2e3569e805d # v1.6.3
+        id: app-token
+        with:
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          token: "${{ steps.app-token.outputs.token }}"
+
+      - name: Renovate
+        uses: renovatebot/github-action@f9c81dddc9b589e4e6ae0326d1e36f6bc415d230 # v39.2.4
+        env:
+          LOG_LEVEL: "${{ inputs.log-level }}"
+          RENOVATE_DRY_RUN: "${{ inputs.dry-run }}"
+          RENOVATE_AUTODISCOVER: true
+          RENOVATE_AUTODISCOVER_FILTER: "${{ github.repository }}"
+          RENOVATE_PLATFORM: github
+          RENOVATE_PLATFORM_COMMIT: true
+        with:
+          configurationFile: "${{ inputs.config-file }}"
+          token: "${{ steps.app-token.outputs.token }}"
