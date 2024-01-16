@@ -9,6 +9,5 @@ group:
         dest: .github/renovate-bot.json5
       - source: .editorconfig
         dest: .editorconfig
-      - source: .vscode
-        dest: .vscode
-        deleteOrphaned: true
+      - source: .vscode/extensions.json
+        dest: .vscode/extensions.json
