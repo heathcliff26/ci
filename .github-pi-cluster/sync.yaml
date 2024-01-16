@@ -1,0 +1,21 @@
+---
+heathcliff26/remote-ops@main:
+  - source: kubernetes/unbound/app/unbound.conf
+    dest: kubernetes/unbound/app/unbound.conf
+  - source: kubernetes/unbound/app/local-zones.d/
+    dest: kubernetes/unbound/app/local-zones.d/
+    deleteOrphaned: true
+  - source: .editorconfig
+    dest: .editorconfig
+  - source: .vscode
+    dest: .vscode
+    deleteOrphaned: true
+
+group:
+  repos: |
+    heathcliff26/remote-ops@main
+    heathcliff26/containers@main
+    heathcliff26/promremote@main
+  files:
+    - source: .github/renovate-bot.json5
+      dest: .github/renovate-bot.json5

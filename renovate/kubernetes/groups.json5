@@ -1,0 +1,15 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "packageRules": [
+    {
+      "description": "Group Github Action Runners",
+      "groupName": "gha-runner",
+      "matchPackagePatterns": ["gha-runner-*"],
+      "matchDatasources": ["docker", "github-tags", "github-releases"],
+      "versioning": "semver",
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group"
+      }
+    }
+  ]
+}
