@@ -19,4 +19,7 @@
   "assigneesFromCodeOwners": true,
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": ["prIgnoreNotification"],
+  "github-actions": {
+    "fileMatch": ["^workflows/.+\\.ya?ml?$"]
+  },
 }
