@@ -8,7 +8,6 @@ on:
 
 jobs:
   check-editorconfig:
-    name: Run editorconfig-checker
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

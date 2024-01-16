@@ -17,7 +17,6 @@ on:
 
 jobs:
   sync:
-    name: Flux HelmRepository Sync
     runs-on: ["arc-remote-ops"]
     steps:
       - name: Checkout
