@@ -40,7 +40,7 @@ jobs:
 
   renovate:
     needs: prepare
-    uses: heathcliff26/ci/workflows/renovate.yaml@main
+    uses: heathcliff26/ci/workflows/shared/renovate.yaml@main
     with:
       dry-run: ${{ needs.prepare.outputs.dry-run }}
       log-level: "${{ needs.prepare.outputs.log-level }}"
