@@ -1,47 +1,48 @@
 ---
-name: "Renovate"
+name: Run Renovate
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
-      dryRun:
+      dry-run:
         description: Make no changes
-        default: "false"
+        type: boolean
+        default: false
         required: false
-      logLevel:
+      log-level:
         description: Set log-level
+        type: string
         default: debug
         required: false
-  schedule:
-    - cron: "10 * * * 5"
-  push:
-    branches: ["main"]
-    paths:
-      - .github/renovate-bot.json5
-      - .github/renovate.json5
-      - .github/renovate/**.json5
-
-env:
-  LOG_LEVEL: debug
-  RENOVATE_DRY_RUN: false
+      config-file:
+        description: Config file used by renovate
+        type: string
+        default: .github/renovate-bot.json5
+        required: false
 
 jobs:
-  prepare:
-    runs-on: ubuntu-latest
-    outputs:
-      dry-run: ${{ steps.config.outputs.dry-run }}
-      log-level: "${{ steps.config.outputs.log-level }}"
-    steps:
-      - name: Generate config from dispatch variables or defaults
-        id: config
-        run: |
-          echo "dry-run=${{ github.event.inputs.dryRun || env.RENOVATE_DRY_RUN }}" >> "$GITHUB_OUTPUT"
-          echo "log-level=${{ github.event.inputs.logLevel || env.LOG_LEVEL }}" >> "$GITHUB_OUTPUT"
-
   renovate:
-    needs: prepare
-    uses: heathcliff26/ci/workflows/shared/renovate.yaml@main
-    with:
-      dry-run: ${{ needs.prepare.outputs.dry-run }}
-      log-level: "${{ needs.prepare.outputs.log-level }}"
-    secrets: inherit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@f04aa94d10cf56334d1c580e077ce2e3569e805d # v1.6.3
+        id: app-token
+        with:
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          token: "${{ steps.app-token.outputs.token }}"
+
+      - name: Renovate
+        uses: renovatebot/github-action@f9c81dddc9b589e4e6ae0326d1e36f6bc415d230 # v39.2.4
+        env:
+          LOG_LEVEL: ${{ inputs.log-level }}
+          RENOVATE_DRY_RUN: ${{ inputs.dry-run }}
+          RENOVATE_AUTODISCOVER: true
+          RENOVATE_AUTODISCOVER_FILTER: "${{ github.repository }}"
+        with:
+          configurationFile: "${{ inputs.config-file }}"
+          token: "${{ steps.app-token.outputs.token }}"
