@@ -6,7 +6,7 @@ on:
     inputs:
       dry-run:
         description: "dry-run"
-        default: "false"
+        default: "null"
         required: false
       log-level:
         description: Set log-level

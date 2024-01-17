@@ -5,9 +5,9 @@ on:
   workflow_call:
     inputs:
       dry-run:
-        description: Make no changes
+        description: dry-run
         type: string
-        default: "false"
+        default: "null"
         required: false
       log-level:
         description: Set log-level
