@@ -43,6 +43,8 @@ jobs:
           RENOVATE_DRY_RUN: "${{ inputs.dry-run }}"
           RENOVATE_AUTODISCOVER: true
           RENOVATE_AUTODISCOVER_FILTER: "${{ github.repository }}"
+          RENOVATE_PLATFORM: github
+          RENOVATE_PLATFORM_COMMIT: true
         with:
           configurationFile: "${{ inputs.config-file }}"
           token: "${{ steps.app-token.outputs.token }}"
