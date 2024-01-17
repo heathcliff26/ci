@@ -1,5 +1,5 @@
 ---
-name: "Kubeconform"
+name: "Kubernetes Kubeconform"
 
 on:
   workflow_call:

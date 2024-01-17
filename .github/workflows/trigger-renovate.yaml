@@ -1,5 +1,5 @@
 ---
-name: "Trigger Renovate"
+name: "Renovate trigger"
 
 on:
   workflow_dispatch:

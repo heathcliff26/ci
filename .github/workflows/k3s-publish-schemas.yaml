@@ -1,5 +1,5 @@
 ---
-name: "Publish Schemas"
+name: "Kubernetes Publish Schemas"
 
 on:
   workflow_call:

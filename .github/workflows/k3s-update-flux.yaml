@@ -1,4 +1,4 @@
-name: "Update flux"
+name: "Kubernetes update flux"
 
 on:
   workflow_call:

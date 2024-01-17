@@ -1,5 +1,5 @@
 ---
-name: "HelmRepository Sync"
+name: "Kubernetes Helmrepository Sync"
 
 on:
   workflow_call:
