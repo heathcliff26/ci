@@ -2,9 +2,18 @@
 name: "Link Check"
 
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: "0 0 * * 0"
+  workflow_call:
+    inputs:
+      exclude-links:
+        description: Exclude specific URLs
+        type: string
+        required: false
+        default: ""
+      exclude-paths:
+        description: Exclude specific paths
+        type: string
+        required: false
+        default: ""
 
 env:
   WORKFLOW_ISSUE_TITLE: "Link Checker Dashboard 🔗"
@@ -25,13 +34,28 @@ jobs:
         with:
           token: "${{ steps.app-token.outputs.token }}"
 
+      - name: Create exclude flags
+        id: exclude-flags
+        run: |
+          set -e
+          urls=""
+          paths=""
+          for url in "${{ inputs.exclude-links }}"; do
+            urls="${urls} --exclude ${url}"
+          done
+          for path in "${{ inputs.exclude-paths }}"; do
+            paths="${paths} --exclude ${path}"
+          done
+          echo "urls=${urls}" >> "$GITHUB_OUTPUT"
+          echo "paths=${paths}" >> "$GITHUB_OUTPUT"
+
       - name: Scan for broken links
         uses: lycheeverse/lychee-action@c3089c702fbb949e3f7a8122be0c33c017904f9b # v1.9.1
         id: lychee
         env:
           GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
         with:
-          args: --verbose --no-progress --exclude "https://github.com/heathcliff26/pi-cluster" --exclude-mail './**/*.md'
+          args: --verbose --no-progress ${{ steps.exclude-flags.outputs.urls }} ${{ steps.exclude-flags.outputs.paths }} --exclude-mail './**/*.md'
 
       - name: Find Link Checker Issue
         id: find-issue

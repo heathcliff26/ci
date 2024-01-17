@@ -1,5 +1,5 @@
 ---
-name: Run unit-tests
+name: "Golang unit-tests"
 
 on:
   workflow_call:

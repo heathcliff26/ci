@@ -1,13 +1,7 @@
-name: update-flux
+name: "Update flux"
 
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: "30 5 * * 6"
-  push:
-    branches: ["main"]
-    paths:
-      - .github/workflows/update-flux.yaml
+  workflow_call:
 
 permissions:
   contents: write

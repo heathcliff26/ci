@@ -1,14 +1,14 @@
 ---
-name: Trigger Renovate
+name: "Trigger Renovate"
 
 on:
   workflow_dispatch:
     inputs:
-      dryRun:
-        description: Make no changes
+      dry-run:
+        description: "dry-run"
         default: "false"
         required: false
-      logLevel:
+      log-level:
         description: Set log-level
         default: debug
         required: false
@@ -35,8 +35,8 @@ jobs:
       - name: Generate config from dispatch variables or defaults
         id: config
         run: |
-          echo "dry-run=${{ github.event.inputs.dryRun || env.RENOVATE_DRY_RUN }}" >> "$GITHUB_OUTPUT"
-          echo "log-level=${{ github.event.inputs.logLevel || env.LOG_LEVEL }}" >> "$GITHUB_OUTPUT"
+          echo "dry-run=${{ github.event.inputs.dry-run || env.RENOVATE_DRY_RUN }}" >> "$GITHUB_OUTPUT"
+          echo "log-level=${{ github.event.inputs.log-level || env.LOG_LEVEL }}" >> "$GITHUB_OUTPUT"
 
   renovate:
     needs: prepare

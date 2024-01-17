@@ -1,5 +1,5 @@
 ---
-name: Run lint
+name: "Golang lint"
 
 on:
   workflow_call:

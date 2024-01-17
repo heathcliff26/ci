@@ -2,16 +2,11 @@
 name: "Publish Schemas"
 
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: "0 1 * * 0"
-  push:
-    branches: ["main"]
-    paths: [".github/workflows/publish-schemas.yaml"]
+  workflow_call:
 
 jobs:
   publish-manifests:
-    runs-on: ["arc-remote-ops"]
+    runs-on: ["arc-${{ github.event.repository.name }}"]
     permissions:
       contents: read
       packages: write
