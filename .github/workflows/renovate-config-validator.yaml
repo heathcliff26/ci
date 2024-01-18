@@ -14,7 +14,6 @@ on:
     paths:
       - .github/renovate-bot.json5
       - .github/renovate.json5
-      - .github/renovate/**.json5
       - .github/workflows/renovate-config-validator.yaml
 
 env:
