@@ -22,6 +22,9 @@ jobs:
         shell: bash
         run: brew install fluxcd/tap/flux kubeconform kustomize
 
+      - name: Download script
+        run: curl -SLO https://raw.githubusercontent.com/heathcliff26/ci/main/scripts/kubeconform.sh && chmod +x kubeconform.sh
+
       - name: Download CRDs
         shell: bash
         run: |
