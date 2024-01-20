@@ -44,7 +44,7 @@ jobs:
           RENOVATE_AUTODISCOVER: true
           RENOVATE_AUTODISCOVER_FILTER: "${{ github.repository }}"
           RENOVATE_PLATFORM: github
-          RENOVATE_PLATFORM_COMMIT: true
+          RENOVATE_PLATFORM_COMMIT: false
         with:
           configurationFile: "${{ inputs.config-file }}"
           token: "${{ steps.app-token.outputs.token }}"
