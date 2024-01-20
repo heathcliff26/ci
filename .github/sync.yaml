@@ -4,6 +4,10 @@ group:
       heathcliff26/infraspace-savegame-editor@main
       heathcliff26/containers@main
       heathcliff26/promremote@main
+      heathcliff26/cloudflare-dyndns@main
+      heathcliff26/minecraft-exporter@main
+      heathcliff26/simple-fileserver@main
+      heathcliff26/speedtest-exporter@main
       heathcliff26/pi-cluster@main
       heathcliff26/remote-ops@main
     files:
