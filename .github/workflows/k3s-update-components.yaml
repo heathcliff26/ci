@@ -1,4 +1,4 @@
-name: "Kubernetes update-flux"
+name: "Kubernetes update-components"
 
 on:
   workflow_call:
@@ -23,12 +23,8 @@ jobs:
         uses: fluxcd/flux2/action@5c5c15ea212b8f029a110f9975851d25c8272695 # v2.2.2
 
       - name: Check for updates
-        id: update
         run: |
-          flux install --export > ./kubernetes/flux-system/gotk-components.yaml
-
-          VERSION="$(flux -v)"
-          echo "flux_version=$VERSION" >> $GITHUB_OUTPUT
+          make update
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@153407881ec5c347639a548ade7d8ad1d6740e38 # v5.0.2
@@ -36,10 +32,12 @@ jobs:
             token: "${{ steps.app-token.outputs.token }}"
             branch: update-flux
             commit-message: |
-              Flux: Update to ${{ steps.update.outputs.flux_version }}
+              Update components to latest version
+
+              Created via `make update`
 
               Signed-off-by: bot-ahsoka <noreply@heathcliff.eu>
-            title: "Flux: Update to ${{ steps.update.outputs.flux_version }}"
+            title: "Update components to latest version"
             body: |
-              ${{ steps.update.outputs.flux_version }}
-            labels: flux
+              Created via `make update`
+            labels: update,flux
