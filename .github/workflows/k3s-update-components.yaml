@@ -27,16 +27,18 @@ jobs:
           make update
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@153407881ec5c347639a548ade7d8ad1d6740e38 # v5.0.2
+        uses: peter-evans/create-pull-request@b1ddad2c994a25fbc81a28b3ec0e368bb2021c50 # v6.0.0
         with:
             token: "${{ steps.app-token.outputs.token }}"
-            branch: update-flux
+            branch: update-components
+            committer: bot-ahsoka[bot] <bot-ahsoka[bot]@users.noreply.github.com>
+            author: bot-ahsoka[bot] <bot-ahsoka[bot]@users.noreply.github.com>
             commit-message: |
               Update components to latest version
 
               Created via `make update`
 
-              Signed-off-by: bot-ahsoka <noreply@heathcliff.eu>
+            signoff: true
             title: "Update components to latest version"
             body: |
               Created via `make update`
