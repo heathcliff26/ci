@@ -17,3 +17,13 @@ group:
         dest: .editorconfig
       - source: .vscode/extensions.json
         dest: .vscode/extensions.json
+
+  - repos: |
+      heathcliff26/promremote@main
+      heathcliff26/cloudflare-dyndns@main
+      heathcliff26/minecraft-exporter@main
+      heathcliff26/simple-fileserver@main
+      heathcliff26/speedtest-exporter@main
+    files:
+      - source: renovate/configs/golang.json5
+        dest: .github/renovate.json5
