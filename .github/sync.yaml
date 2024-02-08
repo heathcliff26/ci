@@ -8,6 +8,7 @@ group:
       heathcliff26/minecraft-exporter@main
       heathcliff26/simple-fileserver@main
       heathcliff26/speedtest-exporter@main
+      heathcliff26/wsl2-ssh-pageant@main
       heathcliff26/pi-cluster@main
       heathcliff26/remote-ops@main
     files:
