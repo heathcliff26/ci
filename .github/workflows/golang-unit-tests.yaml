@@ -3,10 +3,16 @@ name: "Golang unit-tests"
 
 on:
   workflow_call:
+    inputs:
+      os:
+        description: The os used for the runner
+        type: string
+        required: false
+        default: "ubuntu-latest"
 
 jobs:
   unit-tests:
-    runs-on: ubuntu-latest
+    runs-on: "${{ inputs.os }}"
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
