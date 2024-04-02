@@ -25,9 +25,14 @@ on:
         default: "rolling"
         required: false
       tags:
-        description: "Use to set multiple tags, alwasy includes tag, defaults to latest if main branch"
+        description: "Use to set multiple tags, always includes tag, defaults to latest if main branch"
         type: string
         default: "type=raw,value=latest,enable={{is_default_branch}}"
+        required: false
+      build-args:
+        description: "Set build-args, can be multiline string"
+        type: string
+        default: ""
         required: false
       dry-run:
         description: "Use to disable pushing"
@@ -86,3 +91,4 @@ jobs:
           push: ${{ ! inputs.dry-run }}
           tags: "${{ steps.meta.outputs.tags }}"
           labels: "${{ steps.meta.outputs.labels }}"
+          build-args: "${{ inputs.build-args }}"
