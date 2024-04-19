@@ -3,10 +3,16 @@ name: "Kubernetes Publish Schemas"
 
 on:
   workflow_call:
+    inputs:
+      cluster:
+        description: Name of the cluster
+        type: string
+        required: false
+        default: "${{ github.event.repository.name }}"
 
 jobs:
   publish-schemas:
-    runs-on: ["arc-${{ github.event.repository.name }}"]
+    runs-on: ["arc-${{ inputs.cluster }}"]
     steps:
       - name: Setup Flux
         uses: fluxcd/flux2/action@534684601ec8888beb0cc4f51117b59e97606c4d # v2.2.3
@@ -59,7 +65,7 @@ jobs:
       - name: Publish manifests
         shell: bash
         run: |
-          flux push artifact oci://ghcr.io/${{ github.repository_owner }}/manifests/kubernetes-schemas:${{ github.event.repository.name }} \
+          flux push artifact oci://ghcr.io/${{ github.repository_owner }}/manifests/kubernetes-schemas:${{ inputs.cluster }} \
               --path="/home/runner/.datree/crdSchemas" \
               --source="${{ github.repositoryUrl }}" \
-              --revision="${{ github.ref_name }}@sha1:$(git rev-parse HEAD)"
+              --revision="${{ github.ref_name }}@sha1:${{ github.sha }}"
