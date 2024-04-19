@@ -9,6 +9,11 @@ on:
         type: string
         required: false
         default: "${{ github.event.repository.name }}"
+      kubeconfig:
+        description: Name of the secret containing the cluster specific kubeconfig
+        type: string
+        required: false
+        default: "KUBECONFIG"
 
 jobs:
   sync:
@@ -41,7 +46,7 @@ jobs:
         id: kubeconfig
         uses: timheuer/base64-to-file@adaa40c0c581f276132199d4cf60afa07ce60eac # v1.2
         with:
-          encodedString: "${{ secrets.KUBECONFIG }}"
+          encodedString: "${{ secrets[inputs.kubeconfig] }}"
           fileName: kubeconfig
 
       - name: Get changed files
