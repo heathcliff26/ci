@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        path: ["kubernetes"]
+        path: ["kubernetes/pi-cluster", "kubernetes/remote-ops"]
         resource: ["helmrelease", "kustomization"]
     steps:
       - name: Generate Token
