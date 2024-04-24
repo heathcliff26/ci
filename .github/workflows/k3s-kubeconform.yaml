@@ -34,4 +34,4 @@ jobs:
 
       - name: Run kubeconform
         shell: bash
-        run: bash hack/prepare-flux-files-for-ci.sh && ./kubeconform.sh ${{ env.KUBERNETES_DIR }} ${{ env.SCHEMA_DIR }}
+        run: bash ./kubeconform.sh ${{ env.KUBERNETES_DIR }} ${{ env.SCHEMA_DIR }}

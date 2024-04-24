@@ -22,32 +22,12 @@ jobs:
       - name: Setup Flux
         uses: fluxcd/flux2/action@534684601ec8888beb0cc4f51117b59e97606c4d # v2.2.3
 
-      - name: Checkout PR branch
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-        with:
-          path: pr
-          token: "${{ steps.app-token.outputs.token }}"
-
-      - name: Checkout live branch
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-        with:
-          ref: main
-          path: live
-          token: "${{ steps.app-token.outputs.token }}"
-
-      - name: Prepare files for CI
-        run: |
-          set -e
-          pr/hack/prepare-flux-files-for-ci.sh
-          live/hack/prepare-flux-files-for-ci.sh
-
       - name: Diff Resources
         uses: allenporter/flux-local/action/diff@e630daec1a1bcd24dc80f5100c6e1c7b6a091153 # 4.3.1
         id: diff
         with:
           path: "${{ matrix.path }}"
           resource: "${{ matrix.resource }}"
-          token: "${{ steps.app-token.outputs.token }}"
 
       - if: ${{ steps.diff.outputs.diff != '' }}
         name: Add comment
