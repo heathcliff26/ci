@@ -37,6 +37,7 @@
     {
       "description": "Auto merge Kubernetes",
       "matchManagers": ["kubernetes", "helm-values"],
+      "excludePackageNames": ["docker.io/grafana/agent"],
       "automerge": true,
       "automergeType": "branch",
       "matchUpdateTypes": ["patch"]
