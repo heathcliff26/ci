@@ -30,3 +30,12 @@ group:
     files:
       - source: renovate/configs/golang.json5
         dest: .github/renovate.json5
+      - source: .golangci.yml
+        dest: .golangci.yml
+
+  - repos: |
+      heathcliff26/go-minesweeper@main
+      heathcliff26/infraspace-savegame-editor@main
+    files:
+      - source: .golangci.yml
+        dest: .golangci.yml
