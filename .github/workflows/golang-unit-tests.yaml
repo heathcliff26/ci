@@ -23,5 +23,5 @@ jobs:
           go-version: 'stable'
           cache-dependency-path: go.sum
 
-      - name: run tests
+      - name: Run tests
         run: make test
