@@ -9,6 +9,16 @@ on:
         type: string
         required: false
         default: "ubuntu-latest"
+      cache:
+        description: Persist go-build cache between runs
+        type: boolean
+        required: false
+        default: true
+      cmd:
+        description: The test command to run
+        type: string
+        required: false
+        default: make test
 
 jobs:
   unit-tests:
@@ -23,5 +33,13 @@ jobs:
           go-version: 'stable'
           cache-dependency-path: go.sum
 
+      - name: Cache
+        if: ${{ inputs.cache }}
+        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+        with:
+          path: |
+            /home/runner/.cache/go-build
+          key: golang-unit-tests
+
       - name: Run tests
-        run: make test
+        run: ${{ inputs.cmd }}

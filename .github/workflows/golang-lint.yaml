@@ -9,6 +9,11 @@ on:
         type: string
         required: false
         default: "ubuntu-latest"
+      cache:
+        description: Persist go-build cache between runs
+        type: boolean
+        required: false
+        default: true
 
 jobs:
   lint:
@@ -28,4 +33,4 @@ jobs:
         with:
           version: latest
           args: --config=.golangci.yml --timeout 300s
-          skip-cache: true
+          skip-cache: ${{ !inputs.cache }}
