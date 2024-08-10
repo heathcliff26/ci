@@ -11,13 +11,20 @@ group:
       heathcliff26/wsl2-ssh-pageant@main
       heathcliff26/go-minesweeper@main
       heathcliff26/fleetlock@main
-      heathcliff26/infra@main
       heathcliff26/kube-upgrade@main
     files:
       - source: .github/renovate-bot.json5
         dest: .github/renovate-bot.json5
       - source: .editorconfig
         dest: .editorconfig
+      - source: .vscode/extensions.json
+        dest: .vscode/extensions.json
+
+  - repos: |
+      heathcliff26/infra@main
+    files:
+      - source: .github/renovate-bot.json5
+        dest: .github/renovate-bot.json5
       - source: .vscode/extensions.json
         dest: .vscode/extensions.json
 
