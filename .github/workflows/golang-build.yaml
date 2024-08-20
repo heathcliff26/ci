@@ -12,21 +12,26 @@ on:
       goos:
         description: "Target os"
         type: string
-        required: true
+        required: false
       goarch:
         description: "Target arch"
         type: string
-        required: true
+        required: false
       cache:
         description: Persist go-build cache between runs
         type: boolean
         required: false
         default: true
       artifact:
-        description: Artifact(s) to upload from bin/
+        description: Artifact(s) to upload
         type: string
         required: false
-        default: "*"
+        default: ""
+      artifact-name:
+        description: The name under which the artifact will be uploaded
+        type: string
+        required: false
+        default: ""
       cmd:
         description: The test command to run
         type: string
@@ -62,9 +67,10 @@ jobs:
         run: ${{ inputs.cmd }}
 
       - name: Upload Artifact
+        if: ${{ inputs.artifact }} != "" || ${{ inputs.artifact-name }} != ""
         uses: actions/upload-artifact@0b2256b8c012f0828dc542b3febcab082c67f72b # v4.3.4
         with:
-          name: "${{ inputs.artifact }}"
-          path: "bin/${{ inputs.artifact }}"
+          name: "${{ inputs.artifact-name }}"
+          path: "${{ inputs.artifact }}"
           retention-days: 14
           if-no-files-found: error
