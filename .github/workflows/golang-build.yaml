@@ -51,7 +51,7 @@ jobs:
         with:
           path: |
             /home/runner/.cache/go-build
-          key: "fyne-cross-${{ inputs.goos }}-${{ inputs.goarch }}"
+          key: "go-build-${{ inputs.goos }}-${{ inputs.goarch }}"
 
       - name: Setup golang
         uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5.0.2
