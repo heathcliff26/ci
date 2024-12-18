@@ -8,6 +8,10 @@ on:
         description: "Create draft release"
         type: boolean
         default: true
+      prerelease:
+        description: "Mark as prerelease"
+        type: boolean
+        default: false
       update:
         description: "Update existing release"
         type: boolean
@@ -52,3 +56,4 @@ jobs:
           draft: ${{ inputs.draft }}
           generateReleaseNotes: true
           tag: "${{ inputs.tag }}"
+          prerelease: ${{ inputs.prerelease }}
