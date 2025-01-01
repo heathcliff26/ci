@@ -39,6 +39,7 @@ jobs:
         with:
           path: |
             /home/runner/.cache/go-build
+            C:\Users\runneradmin\AppData\Local\go-build
           key: golang-unit-tests
 
       - name: Run tests
