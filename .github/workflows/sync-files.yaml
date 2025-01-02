@@ -16,6 +16,7 @@ jobs:
   sync:
     name: Sync Files
     runs-on: ubuntu-latest
+    permissions: {}
     steps:
       - name: Generate Token
         uses: actions/create-github-app-token@c1a285145b9d317df6ced56c09f525b5c2b6f755 # v1.11.1
