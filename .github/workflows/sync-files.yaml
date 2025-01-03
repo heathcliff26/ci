@@ -11,6 +11,7 @@ on:
       - .editorconfig
       - .github/renovate-bot.json5
       - .vscode/*
+      - .golangci.yml
 
 jobs:
   sync:
