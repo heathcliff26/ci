@@ -42,7 +42,7 @@ jobs:
       - name: Copy files to gh-pages
         run: |
           set -e
-          cp ${GITHUB_WORKSPACE}/main/coverprofiles/* ${GITHUB_WORKSPACE}/gh-pages/
+          cp ${GITHUB_WORKSPACE}/main/coverprofiles/*.html ${GITHUB_WORKSPACE}/gh-pages/
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@8621497c8c39c72f3e2a999a26b4ca1b5058a842 # v5.0.1
