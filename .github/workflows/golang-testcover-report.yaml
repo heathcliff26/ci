@@ -3,6 +3,22 @@ name: "Golang test cover report"
 
 on:
   workflow_call:
+    inputs:
+      script:
+        description: The script to run, relative to project root
+        type: string
+        required: false
+        default: hack/coverprofile.sh
+      coveralls:
+        description: Upload coverprofiles to coveralls.io
+        type: boolean
+        required: false
+        default: false
+      coverprofile:
+        description: The file containing the coverprofile
+        type: string
+        required: false
+        default: coverprofile.out
 
 jobs:
   generate-reports:
@@ -30,7 +46,14 @@ jobs:
 
       - name: Generate reports
         run: |
-          ${GITHUB_WORKSPACE}/main/hack/coverprofile.sh
+          ${GITHUB_WORKSPACE}/main/${{ inputs.script }}
+
+      - name: Coveralls
+        if: ${{ inputs.coveralls }}
+        uses: coverallsapp/github-action@cfd0633edbd2411b532b808ba7a8b5e04f76d2c8 # v2.3.4
+        with:
+          file: "main/${{ inputs.coverprofile }}"
+          format: "golang"
 
       - name: Checkout gh-pages
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
