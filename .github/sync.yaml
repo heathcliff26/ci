@@ -13,6 +13,7 @@ group:
       heathcliff26/fleetlock@main
       heathcliff26/kube-upgrade@main
       heathcliff26/go-wol@main
+      heathcliff26/valkey-keepalived@main
     files:
       - source: .github/renovate-bot.json5
         dest: .github/renovate-bot.json5
@@ -38,6 +39,7 @@ group:
       heathcliff26/fleetlock@main
       heathcliff26/kube-upgrade@main
       heathcliff26/go-wol@main
+      heathcliff26/valkey-keepalived@main
     files:
       - source: renovate/configs/golang.json5
         dest: .github/renovate.json5
