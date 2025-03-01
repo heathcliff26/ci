@@ -36,6 +36,7 @@ group:
       heathcliff26/minecraft-exporter@main
       heathcliff26/simple-fileserver@main
       heathcliff26/speedtest-exporter@main
+      heathcliff26/wsl2-ssh-pageant@main
       heathcliff26/fleetlock@main
       heathcliff26/kube-upgrade@main
       heathcliff26/go-wol@main
