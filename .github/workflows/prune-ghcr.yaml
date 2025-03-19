@@ -13,10 +13,6 @@ on:
         type: string
         default: "50"
         required: true
-      delete-tagged:
-        description: "Delete tagged versions"
-        type: boolean
-        default: false
       ignore-versions:
         description: "Versions to ignore"
         type: string
@@ -30,10 +26,11 @@ jobs:
       packages: write
 
     steps:
-      - uses: actions/delete-package-versions@e5bc658cc4c965c472efe991f8beea3981499c55 # v5.0.0
+      - uses: dataaxiom/ghcr-cleanup-action@cd0cdb900b5dbf3a6f2cc869f0dbb0b8211f50c4 # v1.0.16
         with:
-          package-name: "${{ inputs.app }}"
-          package-type: container
-          min-versions-to-keep: "${{ inputs.keep }}"
-          ignore-versions: "${{ inputs.ignore-versions }}"
-          delete-only-untagged-versions: ${{ ! inputs.delete-tagged }}
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          packages: "${{ inputs.app }}"
+          exclude-tags: "${{ inputs.ignore-versions }}"
+          use-regex: true
+          keep-n-untagged: "${{ inputs.keep }}"
+          keep-n-tagged: "${{ inputs.keep }}"
