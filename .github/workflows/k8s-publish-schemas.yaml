@@ -52,6 +52,7 @@ jobs:
         run: |
           curl -SL -o $GITHUB_WORKSPACE/crd-extractor.sh https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/Utilities/crd-extractor.sh
           chmod 755 $GITHUB_WORKSPACE/crd-extractor.sh
+          curl -SL -o $GITHUB_WORKSPACE/openapi2jsonschema.py https://raw.githubusercontent.com/yannh/kubeconform/master/scripts/openapi2jsonschema.py
 
       - name: Write kubeconfig
         id: kubeconfig
