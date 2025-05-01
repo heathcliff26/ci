@@ -39,11 +39,6 @@ on:
         type: boolean
         default: false
         required: false
-      release-version:
-        description: Specify the release version (Used for golang version)
-        type: string
-        required: false
-        default: ""
 
 jobs:
   build-images:
@@ -80,15 +75,6 @@ jobs:
         with:
           username: "${{ secrets.DOCKER_USERNAME }}"
           password: "${{ secrets.DOCKER_TOKEN }}"
-
-      - name: Tag release
-        if: ${{ inputs.release-version != '' }}
-        run: |
-          #!/bin/bash
-
-          if [ -z "$(git tag -l "${{ inputs.release-version }}")" ]; then
-            git tag "${{ inputs.release-version }}"
-          fi
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
