@@ -57,7 +57,7 @@ group:
   - repos: |
       heathcliff26/cerberus-mergeguard@main
     files:
-      - source: renovate/configs/golang.json5
+      - source: renovate/configs/rust.json5
         dest: .github/renovate.json5
       - source: .sourcery.yaml
         dest: .sourcery.yaml
