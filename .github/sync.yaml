@@ -15,6 +15,7 @@ group:
       heathcliff26/go-wol@main
       heathcliff26/valkey-keepalived@main
       heathcliff26/godialog@main
+      heathcliff26/cerberus-mergeguard@main
     files:
       - source: .github/renovate-bot.json5
         dest: .github/renovate-bot.json5
@@ -50,5 +51,13 @@ group:
         dest: .github/renovate.json5
       - source: .golangci.yml
         dest: .golangci.yml
+      - source: .sourcery.yaml
+        dest: .sourcery.yaml
+
+  - repos: |
+      heathcliff26/cerberus-mergeguard@main
+    files:
+      - source: renovate/configs/golang.json5
+        dest: .github/renovate.json5
       - source: .sourcery.yaml
         dest: .sourcery.yaml
