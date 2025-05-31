@@ -27,8 +27,8 @@ jobs:
         run: |
           set -ex
           git tag "${{ inputs.tag }}"
-          if [ "${{ github.event.inputs.overwrite }}" = "true" ]; then
-            git push origin "${{ github.event.inputs.tag }}" --force
+          if [ "${{ inputs.overwrite }}" = "true" ]; then
+            git push origin "${{ inputs.tag }}" --force
           else
-            git push origin "${{ github.event.inputs.tag }}"
+            git push origin "${{ inputs.tag }}"
           fi
