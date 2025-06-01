@@ -21,6 +21,6 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Run editorconfig-checker
-        uses: docker://mstruebing/editorconfig-checker:v3.2.1
+        uses: docker://mstruebing/editorconfig-checker:v3.3.0
         with:
           args: ec --exclude="\.git\/(.*)|vendor\/(.*)"
