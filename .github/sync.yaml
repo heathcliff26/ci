@@ -16,6 +16,7 @@ group:
       heathcliff26/valkey-keepalived@main
       heathcliff26/godialog@main
       heathcliff26/cerberus-mergeguard@main
+      heathcliff26/turbo-clicker@main
     files:
       - source: .github/renovate-bot.json5
         dest: .github/renovate-bot.json5
@@ -56,6 +57,7 @@ group:
 
   - repos: |
       heathcliff26/cerberus-mergeguard@main
+      heathcliff26/turbo-clicker@main
     files:
       - source: renovate/configs/rust.json5
         dest: .github/renovate.json5
