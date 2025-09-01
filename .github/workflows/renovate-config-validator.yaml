@@ -30,11 +30,11 @@ jobs:
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: Validate bot config
-        uses: docker://renovate/renovate:41.91.4
+        uses: docker://renovate/renovate:41.92.0
         with:
           args: renovate-config-validator --strict "${{ env.RENOVATE_BOT_CONFIG_FILE }}"
 
       - name: Validate repository
-        uses: docker://renovate/renovate:41.91.4
+        uses: docker://renovate/renovate:41.92.0
         with:
           args: renovate-config-validator --strict "${{ env.RENOVATE_REPO_CONFIG_FILE }}"
