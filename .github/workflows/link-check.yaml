@@ -61,7 +61,7 @@ jobs:
         env:
           GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
         with:
-          args: --verbose --no-progress ${{ steps.exclude-flags.outputs.urls }} ${{ steps.exclude-flags.outputs.paths }} --exclude-mail './**/*.md'
+          args: --verbose --no-progress ${{ steps.exclude-flags.outputs.urls }} ${{ steps.exclude-flags.outputs.paths }} './**/*.md'
 
       - name: Find Link Checker Issue
         id: find-issue
