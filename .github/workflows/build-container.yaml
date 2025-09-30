@@ -101,6 +101,13 @@ jobs:
           fi
           echo "EOF" >> $GITHUB_OUTPUT
 
+      - name: Extract org.opencontainers.* labels already set in Dockerfile
+        id: labels
+        run: |
+          echo "labels<<EOF" >> $GITHUB_OUTPUT
+          grep 'org.opencontainers.' "${{ inputs.context }}/${{ inputs.dockerfile }}" | sed 's/LABEL//g' | tr -d '\\' | tr -s [:space:] | tr -d '"' >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f # v5.8.0
@@ -109,6 +116,7 @@ jobs:
           tags: |
             "${{ inputs.tag }}"
             "${{ inputs.tags }}"
+          labels: ${{ steps.labels.outputs.labels }}
 
       - name: Add arch to tags
         id: tags
