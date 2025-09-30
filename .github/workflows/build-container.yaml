@@ -134,6 +134,8 @@ jobs:
           tags: "${{ steps.tags.outputs.tags }}"
           labels: "${{ steps.meta.outputs.labels }}"
           build-args: "${{ inputs.build-args }}"
+          provenance: false
+          sbom: false
 
   combine-manifests:
     runs-on: ubuntu-latest
