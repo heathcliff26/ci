@@ -27,6 +27,8 @@ group:
         dest: .vscode/extensions.json
       - source: .github/ISSUE_TEMPLATE
         dest: .github/ISSUE_TEMPLATE
+      - source: .github/release.yaml
+        dest: .github/release.yaml
 
   - repos: |
       heathcliff26/infra@main

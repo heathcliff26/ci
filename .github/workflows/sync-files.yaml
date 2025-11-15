@@ -9,6 +9,7 @@ on:
     paths:
       - .github/sync.yaml
       - .github/ISSUE_TEMPLATE
+      - .github/release.yaml
       - .editorconfig
       - .github/renovate-bot.json5
       - .vscode/*
