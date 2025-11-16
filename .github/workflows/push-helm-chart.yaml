@@ -1,0 +1,59 @@
+---
+name: "Push Helm Chart"
+
+on:
+  workflow_call:
+    inputs:
+      path:
+        description: "The path to the Helm chart"
+        type: string
+        default: "manifests/helm"
+        required: false
+      tag:
+        description: "The version under which to push the Helm chart"
+        type: string
+        required: true
+      name:
+        description: "The name of the helm chart"
+        type: string
+        default: "${{ github.event.repository.name }}"
+        required: false
+      dry-run:
+        description: "Use to disable pushing"
+        type: boolean
+        default: false
+        required: false
+
+jobs:
+  helm:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+
+      - name: Log in to the ghcr.io
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        if: ${{ ! inputs.dry-run }}
+        with:
+          registry: ghcr.io
+          username: "${{ github.actor }}"
+          password: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Push Helm chart to registries
+        run: |
+          set -ex
+
+          helm package "${{ inputs.path }}" --version "${{ inputs.tag }}" --app-version "${{ inputs.tag }}" --destination .
+          if [ "${{ inputs.dry-run }}" = true ]; then
+            echo "Dry run enabled, skipping push"
+            exit 0
+          fi
+          helm push "${{ inputs.name }}-${{ inputs.tag }}.tgz" "oci://ghcr.io/${{ github.repository_owner }}/manifests"
