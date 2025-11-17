@@ -51,6 +51,7 @@ jobs:
         run: |
           set -ex
 
+          helm dependency build "${{ inputs.path }}"
           helm package "${{ inputs.path }}" --version "${{ inputs.tag }}" --app-version "${{ inputs.tag }}" --destination .
           if [ "${{ inputs.dry-run }}" = true ]; then
             echo "Dry run enabled, skipping push"
