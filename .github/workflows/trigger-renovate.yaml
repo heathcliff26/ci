@@ -13,7 +13,7 @@ on:
         default: debug
         required: false
   schedule:
-    - cron: "10 * 1 * *"
+    - cron: "20 * 28 * *"
   push:
     branches: ["main"]
     paths:
