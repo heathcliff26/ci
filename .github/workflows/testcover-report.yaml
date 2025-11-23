@@ -32,7 +32,7 @@ jobs:
           private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
 
       - name: Checkout current branch
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
         with:
           token: "${{ steps.app-token.outputs.token }}"
 
@@ -48,7 +48,7 @@ jobs:
           format: "lcov"
 
       - name: Checkout gh-pages
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
         if: ${{ github.event_name != 'pull_request' && github.event_name != 'merge_group' }}
         with:
           token: "${{ steps.app-token.outputs.token }}"
