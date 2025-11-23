@@ -62,6 +62,7 @@ jobs:
           pushd release
           for file in *; do
             cosign sign-blob "${file}" --bundle "${file}.sigstore.json" --key env://COSIGN_PRIVATE_KEY --yes
+            chmod 644 "${file}.sigstore.json"
           done
           popd
 
