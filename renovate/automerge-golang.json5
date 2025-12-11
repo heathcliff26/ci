@@ -1,0 +1,13 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "packageRules": [
+    {
+      "description": "Auto merge golang build container and base images",
+      "matchDatasources": ["docker"],
+      "automerge": true,
+      "automergeType": "branch",
+      "matchUpdateTypes": ["digest", "patch"],
+      "matchPackagePatterns": ["docker.io/library/golang", "docker.io/library/alpine"]
+    },
+  ]
+}
