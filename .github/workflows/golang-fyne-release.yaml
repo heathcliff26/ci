@@ -18,6 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      COSIGN_PRIVATE_KEY: "${{ secrets.COSIGN_PRIVATE_KEY }}"
     steps:
       - name: Checkout
         uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
@@ -35,10 +37,27 @@ jobs:
           path: dist
           merge-multiple: true
 
+      - name: Install Cosign
+        if: ${{ env.COSIGN_PRIVATE_KEY != '' }}
+        uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # v4.0.0
+
+      - name: Sign artifacts with Cosign
+        if: ${{ env.COSIGN_PRIVATE_KEY != '' }}
+        env:
+          COSIGN_PASSWORD: "${{ secrets.COSIGN_PASSWORD }}"
+        run: |
+          set -ex
+          pushd dist
+          for file in *; do
+            cosign sign-blob "${file}" --bundle "${file}.sigstore.json" --key env://COSIGN_PRIVATE_KEY --yes
+            chmod 644 "${file}.sigstore.json"
+          done
+          popd
+
       - uses: ncipollo/release-action@b7eabc95ff50cbeeedec83973935c8f306dfcd0b # v1.20.0
         with:
           allowUpdates: ${{ inputs.update }}
-          artifacts: "dist/*.tar.gz,dist/*.zip"
+          artifacts: "dist/*.tar.gz,dist/*.zip,dist/*.sigstore.json"
           artifactErrorsFailBuild: true
           draft: ${{ inputs.draft }}
           generateReleaseNotes: true
