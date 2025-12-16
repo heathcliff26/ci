@@ -28,6 +28,11 @@ on:
         type: string
         required: false
         default: "amd64"
+      additional-packages:
+        description: Additional packages to install
+        type: string
+        required: false
+        default: ""
 
 jobs:
   run-script:
@@ -35,6 +40,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+
+      - name: Install additional dependencies
+        if: ${{ inputs.additional-packages != '' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ${{ inputs.additional-packages }}
+        shell: bash
 
       - name: Run script
         run: ${{ inputs.cmd }}
