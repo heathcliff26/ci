@@ -18,6 +18,7 @@ group:
       heathcliff26/cerberus-mergeguard@main
       heathcliff26/turbo-clicker@main
       heathcliff26/pinentry-keyring@main
+      heathcliff26/cultures-trainer@main
     files:
       - source: .github/renovate-bot.json5
         dest: .github/renovate-bot.json5
@@ -53,6 +54,7 @@ group:
       heathcliff26/go-minesweeper@main
       heathcliff26/infraspace-savegame-editor@main
       heathcliff26/pinentry-keyring@main
+      heathcliff26/cultures-trainer@main
     files:
       - source: renovate/configs/golang.json5
         dest: .github/renovate.json5
