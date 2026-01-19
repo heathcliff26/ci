@@ -12,6 +12,16 @@ on:
         description: "Update existing release"
         type: boolean
         default: false
+      release-artifacts:
+        description: "Artifacts to append, downloaded artifacts are found in release/. Takes comma separated list"
+        type: string
+        required: false
+        default: "release/*"
+      artifacts:
+        description: "Artifacts to download. Artifacts will be downloaded into release/"
+        type: string
+        required: false
+        default: "*"
 
 jobs:
   release:
@@ -34,7 +44,8 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
-          path: dist
+          path: release
+          pattern: "${{ inputs.artifacts }}"
           merge-multiple: true
 
       - name: Install Cosign
@@ -47,7 +58,7 @@ jobs:
           COSIGN_PASSWORD: "${{ secrets.COSIGN_PASSWORD }}"
         run: |
           set -ex
-          pushd dist
+          pushd release
           for file in *; do
             cosign sign-blob "${file}" --bundle "${file}.sigstore.json" --key env://COSIGN_PRIVATE_KEY --yes
             chmod 644 "${file}.sigstore.json"
@@ -57,7 +68,7 @@ jobs:
       - uses: ncipollo/release-action@b7eabc95ff50cbeeedec83973935c8f306dfcd0b # v1.20.0
         with:
           allowUpdates: ${{ inputs.update }}
-          artifacts: "dist/*.tar.gz,dist/*.zip,dist/*.sigstore.json"
+          artifacts: "${{ inputs.release-artifacts }}"
           artifactErrorsFailBuild: true
           draft: ${{ inputs.draft }}
           generateReleaseNotes: true
