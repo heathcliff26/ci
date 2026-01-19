@@ -19,6 +19,11 @@ on:
         type: string
         default: .github/renovate-bot.json5
         required: false
+      cache:
+        description: Persist renovate cache between runs
+        type: boolean
+        required: false
+        default: true
 
 jobs:
   renovate:
@@ -36,6 +41,20 @@ jobs:
         with:
           token: "${{ steps.app-token.outputs.token }}"
 
+      - name: Cache
+        if: ${{ inputs.cache }}
+        uses: actions/cache@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
+        with:
+          path: "/tmp/renovate/cache"
+          key: "renovate-repo"
+
+      - name: Fix cache permissions
+        run: |
+          if [ -d /tmp/renovate ]; then
+            echo "Fixing cache permissions"
+            sudo chown -R 12021:0 /tmp/renovate/
+          fi
+
       - name: Renovate
         uses: renovatebot/github-action@f7fad228a053c69a98e24f8e4f6cf40db8f61e08 # v44.2.1
         env:
@@ -45,6 +64,7 @@ jobs:
           RENOVATE_AUTODISCOVER_FILTER: "${{ github.repository }}"
           RENOVATE_PLATFORM: github
           RENOVATE_PLATFORM_COMMIT: false
+          RENOVATE_REPOSITORY_CACHE: ${{ inputs.cache || 'enabled' }}
         with:
           configurationFile: "${{ inputs.config-file }}"
           token: "${{ steps.app-token.outputs.token }}"
