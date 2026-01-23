@@ -24,10 +24,15 @@ on:
         type: boolean
         required: false
         default: true
+      runs-on:
+        description: The type of machine to run the job on
+        type: string
+        required: false
+        default: ubuntu-latest
 
 jobs:
   renovate:
-    runs-on: ubuntu-latest
+    runs-on: "${{ inputs.runs-on }}"
     steps:
       - name: Generate Token
         uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
