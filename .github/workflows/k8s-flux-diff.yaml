@@ -6,7 +6,7 @@ on:
 
 jobs:
   flux-diff:
-    runs-on: ubuntu-latest
+    runs-on: arc-remote-ops
     strategy:
       matrix:
         path: ["kubernetes/home-ops", "kubernetes/remote-ops"]
