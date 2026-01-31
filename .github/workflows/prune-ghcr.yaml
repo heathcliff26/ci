@@ -18,10 +18,15 @@ on:
         type: string
         default: "(latest|rolling)"
         required: false
+      runs-on:
+        description: The type of machine to run the job on
+        type: string
+        required: false
+        default: ubuntu-latest
 
 jobs:
   prune:
-    runs-on: ubuntu-latest
+    runs-on: "${{ inputs.runs-on }}"
     permissions:
       packages: write
 
