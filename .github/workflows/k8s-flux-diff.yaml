@@ -19,8 +19,12 @@ jobs:
           app-id: "${{ secrets.BOT_APP_ID }}"
           private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
 
-      - name: Setup Flux
-        uses: fluxcd/flux2/action@8454b02a32e48d775b9f563cb51fdcb1787b5b93 # v2.7.5
+      - name: Setup Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Setup Tools
+        shell: bash
+        run: brew install kubeconform kustomize
 
       - name: Diff Resources
         uses: allenporter/flux-local/action/diff@d4ebcae7ae08c8c8b8b7c1f515cf86759f9ca950 # 8.1.0

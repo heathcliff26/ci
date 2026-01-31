@@ -20,7 +20,7 @@ jobs:
 
       - name: Setup Tools
         shell: bash
-        run: brew install fluxcd/tap/flux kubeconform kustomize
+        run: brew install kubeconform kustomize
 
       - name: Download CRDs
         shell: bash
