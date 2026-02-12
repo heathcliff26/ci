@@ -2,6 +2,23 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
     {
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["major"],
+      "commitMessagePrefix": "feat(helm)!: "
+    },
+    {
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["minor"],
+      "semanticCommitType": "feat",
+      "semanticCommitScope": "helm"
+    },
+    {
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["patch"],
+      "semanticCommitType": "fix",
+      "semanticCommitScope": "helm"
+    },
+    {
       "matchDatasources": ["docker"],
       "matchUpdateTypes": ["major"],
       "commitMessagePrefix": "feat(container)!: "
