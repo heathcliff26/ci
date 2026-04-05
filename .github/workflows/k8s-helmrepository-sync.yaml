@@ -26,10 +26,9 @@ jobs:
 
       - name: Write kubeconfig
         id: kubeconfig
-        uses: timheuer/base64-to-file@adaa40c0c581f276132199d4cf60afa07ce60eac # v1.2
-        with:
-          encodedString: "${{ secrets[inputs.kubeconfig] }}"
-          fileName: kubeconfig
+        run: |
+          echo "${{ secrets[inputs.kubeconfig] }}" | base64 -d > "${HOME}/kubeconfig"
+          echo "filePath=${HOME}/kubeconfig" >> $GITHUB_OUTPUT
 
       - name: Get changed files
         id: changed-files
