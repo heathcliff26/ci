@@ -41,7 +41,6 @@ group:
 
   - repos: |
       heathcliff26/promremote@main
-      heathcliff26/cloudflare-dyndns@main
       heathcliff26/minecraft-exporter@main
       heathcliff26/simple-fileserver@main
       heathcliff26/speedtest-exporter@main
@@ -64,6 +63,7 @@ group:
         dest: .sourcery.yaml
 
   - repos: |
+      heathcliff26/cloudflare-dyndns@main
       heathcliff26/cerberus-mergeguard@main
       heathcliff26/turbo-clicker@main
     files:
