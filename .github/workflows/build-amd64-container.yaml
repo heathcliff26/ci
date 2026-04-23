@@ -1,0 +1,147 @@
+---
+name: "Build Container for amd64 only"
+
+on:
+  workflow_call:
+    inputs:
+      app:
+        description: "The name of the app"
+        type: string
+        default: "${{ github.event.repository.name }}"
+        required: false
+      context:
+        description: "The folder to build in"
+        type: string
+        default: "."
+        required: false
+      dockerfile:
+        description: "Use to override Dockerfile path"
+        type: string
+        default: "Dockerfile"
+        required: false
+      tag:
+        description: "Use to set tag, default: rolling"
+        type: string
+        default: "rolling"
+        required: false
+      tags:
+        description: "Use to set multiple tags, always includes tag, defaults to latest if main branch"
+        type: string
+        default: "type=raw,value=latest,enable={{is_default_branch}}"
+        required: false
+      build-args:
+        description: "Set build-args, can be multiline string"
+        type: string
+        default: ""
+        required: false
+      dry-run:
+        description: "Use to disable pushing"
+        type: boolean
+        default: false
+        required: false
+
+jobs:
+  build-images:
+    runs-on: "ubuntu-latest"
+    env:
+      DOCKER_USERNAME: "${{ secrets.DOCKER_USERNAME }}"
+      QUAY_USERNAME: "${{ secrets.QUAY_USERNAME }}"
+      COSIGN_PRIVATE_KEY: "${{ secrets.COSIGN_PRIVATE_KEY }}"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a # v4.0.0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4.0.0
+
+      - name: Log in to the ghcr.io
+        uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4.0.0
+        if: ${{ ! inputs.dry-run }}
+        with:
+          registry: ghcr.io
+          username: "${{ github.actor }}"
+          password: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Log in to the Dockerhub
+        uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4.0.0
+        if: ${{ ! inputs.dry-run && env.DOCKER_USERNAME != '' }}
+        with:
+          username: "${{ secrets.DOCKER_USERNAME }}"
+          password: "${{ secrets.DOCKER_TOKEN }}"
+
+      - name: Log in to Quay.io
+        uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4.0.0
+        if: ${{ ! inputs.dry-run && env.QUAY_USERNAME != '' }}
+        with:
+          registry: quay.io
+          username: "${{ secrets.QUAY_USERNAME }}"
+          password: "${{ secrets.QUAY_TOKEN }}"
+
+      - name: Create list of repositories
+        id: repos
+        run: |
+          echo "repos<<EOF" >> $GITHUB_OUTPUT
+
+          echo "ghcr.io/${{ github.repository_owner }}/${{ inputs.app }}" >> $GITHUB_OUTPUT
+          if [ -n "${{ env.DOCKER_USERNAME }}" ]; then
+            echo "${{ secrets.DOCKER_USERNAME }}/${{ inputs.app }}" >> $GITHUB_OUTPUT
+          fi
+          if [ -n "${{ env.QUAY_USERNAME }}" ]; then
+            echo "quay.io/${QUAY_USERNAME%+*}/${{ inputs.app }}" >> $GITHUB_OUTPUT
+          fi
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Extract org.opencontainers.* labels already set in Dockerfile
+        id: labels
+        run: |
+          echo "labels<<EOF" >> $GITHUB_OUTPUT
+          grep 'org.opencontainers.' "${{ inputs.context }}/${{ inputs.dockerfile }}" | sed 's/LABEL//g' | tr -d '\\' | tr -s [:space:] | tr -d '"' >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@030e881283bb7a6894de51c315a6bfe6a94e05cf # v6.0.0
+        with:
+          images: ${{ steps.repos.outputs.repos }}
+          tags: |
+            "${{ inputs.tag }}"
+            "${{ inputs.tags }}"
+          labels: ${{ steps.labels.outputs.labels }}
+
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
+        with:
+          context: "${{ inputs.context }}"
+          platforms: "linux/amd64"
+          file: "${{ inputs.context }}/${{ inputs.dockerfile }}"
+          push: ${{ ! inputs.dry-run }}
+          tags: "${{ steps.meta.outputs.tags }}"
+          labels: "${{ steps.meta.outputs.labels }}"
+          build-args: "${{ inputs.build-args }}"
+          provenance: false
+          sbom: false
+
+      - name: Install Cosign
+        if: ${{ ! inputs.dry-run && env.COSIGN_PRIVATE_KEY != '' }}
+        uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # v4.0.0
+        with:
+          cosign-release: 'v2.6.2'
+
+      - name: Sign images with Cosign
+        if: ${{ ! inputs.dry-run && env.COSIGN_PRIVATE_KEY != '' }}
+        env:
+          TAGS: "${{ steps.meta.outputs.tags }}"
+          COSIGN_PASSWORD: "${{ secrets.COSIGN_PASSWORD }}"
+        run: |
+          set -ex
+          readarray -t tags <<< $(echo -e "${TAGS}")
+          for tag in "${tags[@]}"; do
+            DIGEST="$(docker buildx imagetools inspect ${tag} | grep Digest: | awk '{print $2}')"
+            cosign sign --key env://COSIGN_PRIVATE_KEY --recursive --yes "${tag}@${DIGEST}"
+          done
