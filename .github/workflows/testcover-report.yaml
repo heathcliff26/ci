@@ -28,9 +28,12 @@ on:
 jobs:
   generate-reports:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Generate Token
         uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3.0.0
+        if: ${{ github.event_name != 'pull_request' && github.event_name != 'merge_group' }}
         id: app-token
         with:
           app-id: "${{ secrets.BOT_APP_ID }}"
@@ -38,8 +41,6 @@ jobs:
 
       - name: Checkout current branch
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          token: "${{ steps.app-token.outputs.token }}"
 
       - name: Install additional dependencies
         if: ${{ inputs.additional-packages != '' }}
