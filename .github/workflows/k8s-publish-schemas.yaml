@@ -62,7 +62,9 @@ jobs:
           KUBECONFIG: ${{ steps.kubeconfig.outputs.filePath }}
         shell: bash
         run: |
+          set -e
           bash $GITHUB_WORKSPACE/crd-extractor.sh
+          rm -rf /home/runner/.datree/crdSchemas/master-standalone
 
       - name: Publish manifests
         shell: bash
