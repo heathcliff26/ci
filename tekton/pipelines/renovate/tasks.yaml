@@ -1,0 +1,68 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.heathcliff.eu/operator.tekton.dev/task_v1.json
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: renovate
+  namespace: tekton-pipelines
+spec:
+  description: >-
+    Run renovate on the cloned repository.
+  params:
+    - name: token
+      type: string
+      description: GitHub access token
+    - name: repo
+      type: string
+      description: The github repository to update.
+    - name: dry-run
+      type: string
+      description: dry-run
+      default: "null"
+    - name: log-level
+      type: string
+      description: Set log-level
+      default: debug
+    - name: cache
+      type: string
+      description: Persist renovate cache between runs
+      default: enabled
+  steps:
+    - name: renovate
+      image: docker.io/renovate/renovate:43.210
+      env:
+        - name: LOG_LEVEL
+          value: $(params.log-level)
+        - name: RENOVATE_DRY_RUN
+          value: $(params.dry-run)
+        - name: RENOVATE_AUTODISCOVER
+          value: "true"
+        - name: RENOVATE_CACHE
+          value: $(params.cache)
+        - name: RENOVATE_AUTODISCOVER_FILTER
+          value: heathcliff26/$(params.repo)
+        - name: RENOVATE_PLATFORM
+          value: github
+        - name: RENOVATE_REPOSITORY_CACHE
+          value: $(params.cache)
+        - name: RENOVATE_TOKEN
+          value: $(params.token)
+        - name: RENOVATE_CONFIG_FILE
+          value: /config/renovate-bot.json5
+        - name: RENOVATE_CACHE_DIR
+          value: /cache/$(params.repo)
+      volumeMounts:
+        - name: renovate-config
+          mountPath: /config
+        - name: renovate-cache
+          mountPath: /cache
+  volumes:
+    - name: github-app
+      secret:
+        secretName: github-app
+    - name: renovate-config
+      configMap:
+        name: renovate-bot-config
+    - name: renovate-cache
+      persistentVolumeClaim:
+        claimName: renovate-cache

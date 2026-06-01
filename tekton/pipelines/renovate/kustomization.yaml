@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - pipeline.yaml
+  - pvc.yaml
+  - tasks.yaml
+configMapGenerator:
+  - name: renovate-bot-config
+    namespace: tekton-pipelines
+    files:
+      - renovate-bot.json5
+    options:
+      disableNameSuffixHash: true

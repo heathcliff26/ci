@@ -1,0 +1,44 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.heathcliff.eu/operator.tekton.dev/task_v1.json
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: token
+  namespace: tekton-pipelines
+spec:
+  description: >-
+    Create a temporary access token for the GitHub App.
+  results:
+    - name: token
+      description: The generated app token
+  steps:
+    - name: get-token
+      image: ghcr.io/heathcliff26/gh-utility:v0.0.1@sha256:4b672db38ae855d7aa935f690b92af4d302aa79b59e14370ae4f333d1c98ea3d
+      env:
+        - name: GITHUB_APP_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: github-app
+              key: client_id
+        - name: GITHUB_APP_INSTALLATION_ID
+          valueFrom:
+            secretKeyRef:
+              name: github-app
+              key: installation_id
+        - name: GITHUB_APP_TOKEN_PATH
+          value: $(results.token.path)
+      script: |
+        #!/bin/sh
+
+        gh-utility token \
+          --key /secrets/private-key.pem \
+          --client-id "${GITHUB_APP_CLIENT_ID}" \
+          --installation-id "${GITHUB_APP_INSTALLATION_ID}" \
+          --output "${GITHUB_APP_TOKEN_PATH}"
+      volumeMounts:
+        - name: github-app
+          mountPath: /secrets
+  volumes:
+    - name: github-app
+      secret:
+        secretName: github-app

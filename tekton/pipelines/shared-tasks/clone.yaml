@@ -1,0 +1,47 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.heathcliff.eu/operator.tekton.dev/task_v1.json
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: clone
+  namespace: tekton-pipelines
+spec:
+  description: >-
+    Clone the repository using the access token.
+  params:
+    - name: token
+      type: string
+      description: GitHub access token
+    - name: repo
+      type: string
+      description: Name of the GitHub repository
+    - name: directory
+      type: string
+      description: Directory to clone into relative to the workspace root
+      default: "."
+    - name: fetch_depth
+      type: string
+      description: Fetch depth for git clone
+      default: 1
+  workspaces:
+    - name: repo
+      description: Workspace for cloning the repository into
+      mountPath: /workspaces/repo
+  steps:
+    - name: clone
+      image: ghcr.io/heathcliff26/gh-utility:v0.0.1@sha256:4b672db38ae855d7aa935f690b92af4d302aa79b59e14370ae4f333d1c98ea3d
+      env:
+        - name: GITHUB_TOKEN
+          value: $(params.token)
+        - name: GITHUB_REPO
+          value: $(params.repo)
+        - name: GITHUB_DIRECTORY
+          value: $(workspaces.repo.path)/$(params.directory)
+        - name: GITHUB_FETCH_DEPTH
+          value: $(params.fetch_depth)
+      script: |
+        #!/bin/sh
+
+        export GITHUB_TOKEN="$(cat "${GITHUB_TOKEN_PATH}")"
+
+        gh repo clone "heathcliff26/${GITHUB_REPO}" "${GITHUB_DIRECTORY}" -- --depth "${GITHUB_FETCH_DEPTH}"
