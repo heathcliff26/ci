@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.heathcliff.eu/operator.tekton.dev/task_v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.heathcliff.eu/tekton.dev/task_v1.json
 apiVersion: tekton.dev/v1
 kind: Task
 metadata:

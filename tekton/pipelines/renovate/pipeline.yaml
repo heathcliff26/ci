@@ -1,6 +1,6 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.heathcliff.eu/operator.tekton.dev/pipeline_v1beta1.json
-apiVersion: tekton.dev/v1beta1
+# yaml-language-server: $schema=https://kubernetes-schemas.heathcliff.eu/tekton.dev/pipeline_v1.json
+apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
   name: renovate
