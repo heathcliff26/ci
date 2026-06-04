@@ -13,9 +13,20 @@ spec:
         - ref:
             name: cel
           params:
-            - name: pipeline
+            - name: filter
               value: "body.pipeline == 'renovate'"
       bindings:
       - ref: renovate-cron
       template:
         ref: renovate-cron
+    - name: link-check
+      interceptors:
+        - ref:
+            name: cel
+          params:
+            - name: filter
+              value: "body.pipeline == 'link-check'"
+      bindings:
+      - ref: link-check-cron
+      template:
+        ref: link-check-cron
