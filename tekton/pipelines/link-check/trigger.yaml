@@ -24,6 +24,12 @@ spec:
   params:
     - name: repo
       description: The github repository to update.
+    - name: exclude-links
+      description: Exclude specific URLs
+      default: ""
+    - name: exclude-paths
+      description: Exclude specific paths
+      default: ""
   resourcetemplates:
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
