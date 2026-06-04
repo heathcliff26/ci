@@ -18,4 +18,14 @@
   "assigneesFromCodeOwners": true,
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": ["prIgnoreNotification"],
+  "kubernetes": {
+    "managerFilePatterns": [
+      "/(^|/)tekton/.+\\.ya?ml(\\.j2)?$/"
+    ]
+  },
+  "tekton": {
+    "managerFilePatterns": [
+      "/(^|/)tekton/.+\\.ya?ml(\\.j2)?$/"
+    ]
+  }
 }
