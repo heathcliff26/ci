@@ -6,6 +6,7 @@ resources:
   - pipeline.yaml
   - pvc.yaml
   - tasks.yaml
+  - trigger.yaml
 configMapGenerator:
   - name: renovate-bot-config
     namespace: tekton-pipelines

@@ -1,0 +1,34 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.heathcliff.eu/triggers.tekton.dev/triggerbinding_v1beta1.json
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: renovate-cron
+  namespace: tekton-pipelines
+spec:
+  params:
+  - name: repo
+    value: $(body.repo)
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.heathcliff.eu/triggers.tekton.dev/triggertemplate_v1beta1.json
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: renovate-cron
+  namespace: tekton-pipelines
+spec:
+  params:
+    - name: repo
+      description: The github repository to update.
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      generateName: renovate-$(tt.params.repo)-
+      namespace: tekton-pipelines
+    spec:
+      pipelineRef:
+        name: renovate
+      params:
+      - name: repo
+        value: $(tt.params.repo)

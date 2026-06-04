@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.heathcliff.eu/triggers.tekton.dev/eventlistener_v1beta1.json
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: cron
+  namespace: tekton-pipelines
+spec:
+  serviceAccountName: trigger-robot
+  triggers:
+    - name: renovate
+      interceptors:
+        - ref:
+            name: cel
+          params:
+            - name: pipeline
+              value: "body.pipeline == 'renovate'"
+      bindings:
+      - ref: renovate-cron
+      template:
+        ref: renovate-cron
