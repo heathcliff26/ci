@@ -20,8 +20,6 @@ group:
       heathcliff26/pinentry-keyring@main
       heathcliff26/cultures-trainer@main
     files:
-      - source: .github/renovate-bot.json5
-        dest: .github/renovate-bot.json5
       - source: .editorconfig
         dest: .editorconfig
       - source: .vscode/extensions.json
@@ -34,8 +32,6 @@ group:
   - repos: |
       heathcliff26/infra@main
     files:
-      - source: .github/renovate-bot.json5
-        dest: .github/renovate-bot.json5
       - source: .vscode/extensions.json
         dest: .vscode/extensions.json
 

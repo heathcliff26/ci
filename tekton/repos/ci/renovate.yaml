@@ -1,0 +1,17 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ci-renovate
+  namespace: tekton-pipelines
+spec:
+  schedule: "20 * 11 * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: curl
+            image: quay.io/curl/curl:8.20.0
+            args: ["curl", "-X", "POST", "--data", '{"pipeline": "renovate", "repo": "ci"}', "el-cron.tekton-pipelines.svc.cluster.local:8080"]
+          restartPolicy: Never

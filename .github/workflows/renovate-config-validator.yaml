@@ -7,12 +7,10 @@ on:
   push:
     branches: ["main"]
     paths:
-      - .github/renovate-bot.json5
       - .github/renovate.json5
   pull_request:
     branches: ["main"]
     paths:
-      - .github/renovate-bot.json5
       - .github/renovate.json5
       - .github/workflows/renovate-config-validator.yaml
 
@@ -30,6 +28,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Validate bot config
+        if: ${{ hashFiles(env.RENOVATE_BOT_CONFIG_FILE) != '' }}
         uses: docker://renovate/renovate:43.150.0
         with:
           args: renovate-config-validator --strict "${{ env.RENOVATE_BOT_CONFIG_FILE }}"
