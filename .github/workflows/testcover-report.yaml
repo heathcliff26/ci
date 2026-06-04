@@ -36,7 +36,7 @@ jobs:
         if: ${{ github.event_name != 'pull_request' && github.event_name != 'merge_group' }}
         id: app-token
         with:
-          app-id: "${{ secrets.BOT_APP_ID }}"
+          client-id: "${{ secrets.BOT_APP_CLIENT_ID }}"
           private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
 
       - name: Checkout current branch
