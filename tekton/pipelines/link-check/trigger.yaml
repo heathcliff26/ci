@@ -33,6 +33,9 @@ spec:
       spec:
         pipelineRef:
           name: link-check
+          labels:
+            pipeline: link-check
+            repo: $(tt.params.repo)
         params:
           - name: repo
             value: $(tt.params.repo)

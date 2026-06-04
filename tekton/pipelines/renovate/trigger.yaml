@@ -26,6 +26,9 @@ spec:
       metadata:
         generateName: renovate-$(tt.params.repo)-
         namespace: tekton-pipelines
+        labels:
+          pipeline: renovate
+          repo: $(tt.params.repo)
       spec:
         pipelineRef:
           name: renovate
