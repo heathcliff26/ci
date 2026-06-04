@@ -1,0 +1,64 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.heathcliff.eu/tekton.dev/task_v1.json
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: lychee
+  namespace: tekton-pipelines
+spec:
+  description: >-
+    Check all markdown files for links and verify that they are still valid using lychee.
+  params:
+    - name: token
+      type: string
+      description: GitHub access token
+    - name: exclude-links
+      type: string
+      description: Exclude specific URLs, space separated list
+    - name: exclude-paths
+      type: string
+      description: Exclude specific paths, space separated list
+  workspaces:
+    - name: repo
+      description: Workspace containgin the repository to scan
+      mountPath: /workspaces/repo
+  results:
+    - name: summary
+      description: The generated summary of the scan result
+  steps:
+    - name: lychee
+      image: docker.io/lycheeverse/lychee:0.24.2
+      env:
+        - name: GITHUB_TOKEN
+          value: $(params.token)
+        - name: EXCLUDE_LINKS
+          value: $(params.exclude-links)
+        - name: EXCLUDE_PATHS
+          value: $(params.exclude-paths)
+        - name: OUTPUT_PATH
+          value: $(results.summary.path)
+        - name: REPO_PATH
+          value: $(workspaces.repo.path)
+      script: |
+        #!/bin/bash
+
+        set -ex
+
+        cd "${REPO_PATH}"
+
+        IFS=' ' read -r -a excluded_urls <<< "${EXCLUDE_LINKS}"
+        IFS=' ' read -r -a excluded_paths <<< "${EXCLUDE_PATHS}"
+        urls=""
+        paths=""
+        for url in "${excluded_urls[@]}"; do
+            if [ -n "${url}" ]; then
+                urls="${urls} --exclude ${url}"
+            fi
+        done
+        for path in "${excluded_paths[@]}"; do
+            if [ -n "${path}" ]; then
+                paths="${paths} --exclude-path ${path}"
+            fi
+        done
+
+        lychee --format markdown --output "${OUTPUT_PATH}" --verbose --no-progress ${urls} ${paths} './**/*.md'

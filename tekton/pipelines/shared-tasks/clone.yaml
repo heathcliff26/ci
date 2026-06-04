@@ -42,6 +42,4 @@ spec:
       script: |
         #!/bin/sh
 
-        export GITHUB_TOKEN="$(cat "${GITHUB_TOKEN_PATH}")"
-
         gh repo clone "heathcliff26/${GITHUB_REPO}" "${GITHUB_DIRECTORY}" -- --depth "${GITHUB_FETCH_DEPTH}"

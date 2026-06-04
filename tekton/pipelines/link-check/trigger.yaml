@@ -3,18 +3,22 @@
 apiVersion: triggers.tekton.dev/v1beta1
 kind: TriggerBinding
 metadata:
-  name: renovate-cron
+  name: link-check-cron
   namespace: tekton-pipelines
 spec:
   params:
     - name: repo
       value: $(body.repo)
+    - name: exclude-links
+      value: $(body.exclude-links)
+    - name: exclude-paths
+      value: $(body.exclude-paths)
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.heathcliff.eu/triggers.tekton.dev/triggertemplate_v1beta1.json
 apiVersion: triggers.tekton.dev/v1beta1
 kind: TriggerTemplate
 metadata:
-  name: renovate-cron
+  name: link-check-cron
   namespace: tekton-pipelines
 spec:
   params:
@@ -24,11 +28,26 @@ spec:
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
       metadata:
-        generateName: renovate-$(tt.params.repo)-
+        generateName: link-check-$(tt.params.repo)-
         namespace: tekton-pipelines
       spec:
         pipelineRef:
-          name: renovate
+          name: link-check
         params:
           - name: repo
             value: $(tt.params.repo)
+          - name: exclude-links
+            value: $(tt.params.exclude-links)
+          - name: exclude-paths
+            value: $(tt.params.exclude-paths)
+        workspaces:
+          - name: repo
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 1Gi
+                storageClassName: p3-tmp
+

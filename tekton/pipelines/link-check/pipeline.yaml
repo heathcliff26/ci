@@ -1,0 +1,56 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.heathcliff.eu/tekton.dev/pipeline_v1.json
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: link-check
+  namespace: tekton-pipelines
+spec:
+  description: |
+    Check all markdown files for links and verify that they are still valid.
+  params:
+    - name: repo
+      type: string
+      description: The github repository to update.
+    - name: exclude-links
+      type: string
+      description: Exclude specific URLs
+      default: ""
+    - name: exclude-paths
+      type: string
+      description: Exclude specific paths
+      default: ""
+  workspaces:
+    - name: repo
+      description: Workspace for cloning the repository into
+  tasks:
+    - name: token
+      retries: 0
+      taskRef:
+        name: token
+    - name: clone
+      retries: 0
+      taskRef:
+        name: clone
+      params:
+        - name: token
+          value: $(tasks.token.results.token)
+        - name: repo
+          value: $(params.repo)
+      workspaces:
+        - name: repo
+    - name: lychee
+      retries: 0
+      runAfter:
+        - clone
+      taskRef:
+        name: lychee
+      params:
+        - name: token
+          value: $(tasks.token.results.token)
+        - name: exclude-links
+          value: $(params.exclude-links)
+        - name: exclude-paths
+          value: $(params.exclude-paths)
+      workspaces:
+        - name: repo
