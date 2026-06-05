@@ -54,3 +54,17 @@ spec:
           value: $(params.exclude-paths)
       workspaces:
         - name: repo
+  finally:
+    - name: update-issue
+      retries: 0
+      taskRef:
+        name: gh-issue
+      params:
+        - name: token
+          value: $(tasks.token.results.token)
+        - name: repo
+          value: $(params.repo)
+        - name: title
+          value: "Link Checker Dashboard 🔗"
+        - name: body
+          value: $(tasks.lychee.results.summary)

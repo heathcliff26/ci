@@ -2,10 +2,10 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: ci-renovate
+  name: infra-link-check
   namespace: tekton-pipelines
 spec:
-  schedule: "0 * 11 * *"
+  schedule: "1 0 * * 0"
   jobTemplate:
     spec:
       template:
@@ -13,5 +13,5 @@ spec:
           containers:
           - name: curl
             image: quay.io/curl/curl:8.20.0
-            args: ["curl", "-X", "POST", "--data", '{"pipeline": "renovate", "repo": "ci"}', "el-cron.tekton-pipelines.svc.cluster.local:8080"]
+            args: ["curl", "-X", "POST", "--data", '{"pipeline": "link-check", "repo": "infra"}', "el-cron.tekton-pipelines.svc.cluster.local:8080"]
           restartPolicy: Never
