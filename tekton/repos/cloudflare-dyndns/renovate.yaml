@@ -1,0 +1,17 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cloudflare-dyndns-renovate
+  namespace: tekton-pipelines
+spec:
+  schedule: "3 * 12 * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: curl
+            image: quay.io/curl/curl:8.20.0
+            args: ["curl", "-X", "POST", "--data", '{"pipeline": "renovate", "repo": "cloudflare-dyndns"}', "el-cron.tekton-pipelines.svc.cluster.local:8080"]
+          restartPolicy: Never

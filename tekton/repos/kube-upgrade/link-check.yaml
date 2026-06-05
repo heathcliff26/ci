@@ -1,0 +1,17 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: kube-upgrade-link-check
+  namespace: tekton-pipelines
+spec:
+  schedule: "12 0 * * 0"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: curl
+            image: quay.io/curl/curl:8.20.0
+            args: ["curl", "-X", "POST", "--data", '{"pipeline": "link-check", "repo": "kube-upgrade"}', "el-cron.tekton-pipelines.svc.cluster.local:8080"]
+          restartPolicy: Never
