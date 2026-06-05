@@ -14,6 +14,7 @@
     "github>heathcliff26/ci//renovate/labels.json5",
     "github>heathcliff26/ci//renovate/semanticCommits.json5",
     "github>heathcliff26/ci//.github/renovate/automerge.json5",
+    "github>heathcliff26/ci//.github/renovate/group.json5",
     "helpers:pinGitHubActionDigests"
   ],
   "assigneesFromCodeOwners": true,
