@@ -29,7 +29,7 @@ spec:
       mountPath: /workspaces/repo
   steps:
     - name: clone
-      image: ghcr.io/heathcliff26/gh-utility:v0.0.2@sha256:ed02ea68768024f20997f4c3d9eb4c244947fe2d253f24e93abc02520da3cdaa
+      image: ghcr.io/heathcliff26/gh-utility:v0.0.3@sha256:7fc5f6c7dd06ab13441e887a830d38bbe0a8b2115c9193082749a1c9ba2ddb6c
       env:
         - name: GITHUB_TOKEN
           value: $(params.token)
