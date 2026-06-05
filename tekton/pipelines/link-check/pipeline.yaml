@@ -68,3 +68,17 @@ spec:
           value: "Link Checker Dashboard 🔗"
         - name: body
           value: $(tasks.lychee.results.summary)
+    - name: failure-notification
+      when:
+        - input: $(tasks.status)
+          operator: in
+          values: ["Failed", "None"]
+      taskRef:
+        name: failure-notification
+      params:
+        - name: repo
+          value: $(params.repo)
+        - name: pipeline
+          value: $(context.pipeline.name)
+        - name: pipelinerun
+          value: $(context.pipelineRun.name)

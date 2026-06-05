@@ -1,0 +1,50 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.heathcliff.eu/tekton.dev/task_v1.json
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: failure-notification
+  namespace: tekton-pipelines
+spec:
+  description: >-
+    Send a mail notification for failed pipeline runs.
+    Should be used in finally.
+  params:
+    - name: repo
+      description: Name of the GitHub repository
+    - name: pipeline
+      description: Name of the pipeline
+    - name: pipelinerun
+      description: Name of the pipeline run
+  steps:
+    - name: send-email
+      image: quay.io/curl/curl:8.20.0
+      env:
+        - name: SMTP_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mail-account
+              key: username
+        - name: SMTP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mail-account
+              key: password
+      script: |
+        #!/bin/sh
+
+        export FROM="tekton@heathcliff.eu"
+        export TO="heathcliff@heathcliff.eu"
+
+        curl --url "smtp://server53.webgo24.de:587" \
+              --ssl-reqd \
+              --mail-from "${FROM}" \
+              --mail-rcpt "${TO}" \
+              --user "${SMTP_USERNAME}:${SMTP_PASSWORD}" \
+              -T - <<EOF
+        From: ${FROM}
+        To: ${TO}
+        Subject: Failed $(params.repo)/$(params.pipeline) run $(params.pipelinerun)
+
+        See: https://tekton.heathcliff.eu/#/namespaces/tekton-pipelines/pipelineruns/$(params.pipelinerun)
+        EOF
