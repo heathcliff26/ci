@@ -4,7 +4,7 @@ apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: token
-  namespace: tekton-pipelines
+  namespace: tekton-ci
 spec:
   description: >-
     Create a temporary access token for the GitHub App.

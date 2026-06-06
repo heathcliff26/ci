@@ -4,7 +4,7 @@ apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
   name: link-check
-  namespace: tekton-pipelines
+  namespace: tekton-ci
 spec:
   description: |
     Check all markdown files for links and verify that they are still valid.

@@ -4,7 +4,7 @@ apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: failure-notification
-  namespace: tekton-pipelines
+  namespace: tekton-ci
 spec:
   description: >-
     Send a mail notification for failed pipeline runs.

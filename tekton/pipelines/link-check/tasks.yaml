@@ -4,7 +4,7 @@ apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: lychee
-  namespace: tekton-pipelines
+  namespace: tekton-ci
 spec:
   description: >-
     Check all markdown files for links and verify that they are still valid using lychee.
@@ -65,7 +65,7 @@ apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: gh-issue
-  namespace: tekton-pipelines
+  namespace: tekton-ci
 spec:
   description: >-
     Update the Issue with the given title and the specified body.

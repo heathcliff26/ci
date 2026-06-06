@@ -4,7 +4,7 @@ apiVersion: triggers.tekton.dev/v1beta1
 kind: EventListener
 metadata:
   name: cron
-  namespace: tekton-pipelines
+  namespace: tekton-ci
 spec:
   serviceAccountName: trigger-robot
   triggers:

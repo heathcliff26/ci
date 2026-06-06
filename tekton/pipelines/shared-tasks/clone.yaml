@@ -4,7 +4,7 @@ apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: clone
-  namespace: tekton-pipelines
+  namespace: tekton-ci
 spec:
   description: >-
     Clone the repository using the access token.

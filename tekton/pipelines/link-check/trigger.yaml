@@ -4,7 +4,7 @@ apiVersion: triggers.tekton.dev/v1beta1
 kind: TriggerBinding
 metadata:
   name: link-check-cron
-  namespace: tekton-pipelines
+  namespace: tekton-ci
 spec:
   params:
     - name: repo
@@ -19,7 +19,7 @@ apiVersion: triggers.tekton.dev/v1beta1
 kind: TriggerTemplate
 metadata:
   name: link-check-cron
-  namespace: tekton-pipelines
+  namespace: tekton-ci
 spec:
   params:
     - name: repo
@@ -35,7 +35,7 @@ spec:
       kind: PipelineRun
       metadata:
         generateName: link-check-$(tt.params.repo)-
-        namespace: tekton-pipelines
+        namespace: tekton-ci
       spec:
         pipelineRef:
           name: link-check

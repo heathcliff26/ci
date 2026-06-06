@@ -9,7 +9,7 @@ resources:
   - trigger.yaml
 configMapGenerator:
   - name: renovate-bot-config
-    namespace: tekton-pipelines
+    namespace: tekton-ci
     files:
       - renovate-bot.json5
     options:

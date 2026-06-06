@@ -4,7 +4,7 @@ apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: renovate
-  namespace: tekton-pipelines
+  namespace: tekton-ci
 spec:
   description: >-
     Run renovate on the cloned repository.

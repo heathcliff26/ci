@@ -3,7 +3,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: fleetlock-renovate
-  namespace: tekton-pipelines
+  namespace: tekton-ci
 spec:
   schedule: "0 * 13 * *"
   jobTemplate:
@@ -13,5 +13,5 @@ spec:
           containers:
           - name: curl
             image: quay.io/curl/curl:8.20.0
-            args: ["curl", "-X", "POST", "--data", '{"pipeline": "renovate", "repo": "fleetlock"}', "el-cron.tekton-pipelines.svc.cluster.local:8080"]
+            args: ["curl", "-X", "POST", "--data", '{"pipeline": "renovate", "repo": "fleetlock"}', "el-cron.tekton-ci.svc.cluster.local:8080"]
           restartPolicy: Never

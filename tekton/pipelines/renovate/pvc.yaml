@@ -3,11 +3,11 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: renovate-cache
-  namespace: tekton-pipelines
+  namespace: tekton-ci
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: p3-hdd-ephemeral
+  storageClassName: p3-tmp
   resources:
     requests:
       storage: 10Gi
