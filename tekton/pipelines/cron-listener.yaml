@@ -14,7 +14,7 @@ spec:
             name: cel
           params:
             - name: filter
-              value: "body.pipeline == 'renovate'"
+              value: "body.pipeline.matches('renovate')"
       bindings:
       - ref: renovate-cron
       template:
@@ -25,7 +25,7 @@ spec:
             name: cel
           params:
             - name: filter
-              value: "body.pipeline == 'link-check'"
+              value: "body.pipeline.matches('link-check')"
       bindings:
       - ref: link-check-cron
       template:
