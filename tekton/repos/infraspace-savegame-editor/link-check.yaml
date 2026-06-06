@@ -13,5 +13,5 @@ spec:
           containers:
           - name: curl
             image: quay.io/curl/curl:8.20.0
-            args: ["curl", "-X", "POST", "--data", '{"pipeline": "link-check", "repo": "infraspace-savegame-editor"}', "el-cron.tekton-pipelines.svc.cluster.local:8080"]
+            args: ["curl", "-X", "POST", "--data", '{"pipeline": "link-check", "repo": "infraspace-savegame-editor", "exclude-paths": "vendor"}', "el-cron.tekton-pipelines.svc.cluster.local:8080"]
           restartPolicy: Never
