@@ -46,5 +46,6 @@ spec:
         To: ${TO}
         Subject: Failed $(params.repo)/$(params.pipeline) run $(params.pipelinerun)
 
-        See: https://tekton.heathcliff.eu/#/namespaces/tekton-pipelines/pipelineruns/$(params.pipelinerun)
+        Logs: https://tekton.heathcliff.eu/#/namespaces/tekton-ci/pipelineruns/$(params.pipelinerun)
+        Repository: github.com/heathcliff26/$(params.repo)
         EOF
