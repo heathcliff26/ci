@@ -19,6 +19,7 @@ spec:
   steps:
     - name: send-email
       image: quay.io/curl/curl:8.20.0
+      timeout: 1m
       env:
         - name: SMTP_USERNAME
           valueFrom:
