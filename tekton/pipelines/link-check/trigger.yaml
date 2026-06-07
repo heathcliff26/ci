@@ -36,12 +36,12 @@ spec:
       metadata:
         generateName: link-check-$(tt.params.repo)-
         namespace: tekton-ci
+        labels:
+          pipeline: link-check
+          repo: $(tt.params.repo)
       spec:
         pipelineRef:
           name: link-check
-          labels:
-            pipeline: link-check
-            repo: $(tt.params.repo)
         params:
           - name: repo
             value: $(tt.params.repo)
