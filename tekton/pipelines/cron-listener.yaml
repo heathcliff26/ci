@@ -30,3 +30,12 @@ spec:
       - ref: link-check-cron
       template:
         ref: link-check-cron
+    - name: publish-schemas
+      interceptors:
+        - ref:
+            name: cel
+          params:
+            - name: filter
+              value: "body.pipeline.matches('publish-schemas')"
+      template:
+        ref: publish-schemas-cron
