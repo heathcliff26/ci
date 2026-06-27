@@ -1,0 +1,212 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.heathcliff.eu/tekton.dev/pipeline_v1.json
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: publish-schemas
+  namespace: tekton-ci
+spec:
+  description: |
+    Extract and publish schemas for the k8s cluster(s).
+  workspaces:
+    - name: output
+      description: Output for storing the schemas
+  tasks:
+    - name: extract
+      retries: 0
+      displayName: "Extracting schemas from $(params.cluster)"
+      matrix:
+        params:
+          - name: cluster
+            value:
+              - home-ops
+              - remote-ops
+      workspaces:
+        - name: output
+      taskSpec:
+        params:
+          - name: cluster
+        workspaces:
+        - name: output
+          description: Output for storing the schemas
+          mountPath: /home/runner/output
+        steps:
+          - name: extract
+            image: ghcr.io/heathcliff26/runner:202606280906@sha256:146432d23681011f69697b91cfafa9a81dbd5cd7b7c0338dc57b336c73d299ab
+            timeout: 15m
+            env:
+              - name: KUBECONFIG
+                value: /secrets/$(params.cluster)
+              - name: OUTPUT_DIR
+                value: $(workspaces.output.path)/$(params.cluster)
+            script: |
+              #!/bin/sh
+
+              set -e
+
+              /scripts/crd-extractor.sh
+              rm -rf "${OUTPUT_DIR}/master-standalone"
+            volumeMounts:
+              - name: kubeconfigs
+                mountPath: /secrets
+        volumes:
+          - name: kubeconfigs
+            secret:
+              secretName: kubeconfigs
+    - name: combine
+      retries: 0
+      runAfter:
+        - extract
+      workspaces:
+        - name: output
+      taskSpec:
+        workspaces:
+        - name: output
+          description: Output for storing the schemas
+          mountPath: /home/runner/output
+        steps:
+          - name: combine
+            image: ghcr.io/heathcliff26/runner:202606280906@sha256:146432d23681011f69697b91cfafa9a81dbd5cd7b7c0338dc57b336c73d299ab
+            timeout: 5m
+            env:
+              - name: OUTPUT_DIR
+                value: $(workspaces.output.path)/
+            script: |
+              #!/bin/sh
+
+              set -e
+
+              mkdir -p "${OUTPUT_DIR}/manifests"
+              for cluster in remote-ops home-ops; do
+                cp -r -n ${OUTPUT_DIR}/${cluster}/* ${OUTPUT_DIR}/manifests/
+              done
+
+              cat <<EOF > "${OUTPUT_DIR}/Dockerfile"
+              FROM ghcr.io/heathcliff26/simple-fileserver:latest
+
+              LABEL org.opencontainers.image.source="https://github.com/heathcliff26/infra" \
+                    org.opencontainers.image.authors="heathcliff@heathcliff.eu" \
+                    org.opencontainers.image.description="Fileserver for serving kubernetes json schemas" \
+                    org.opencontainers.image.title="kubernetes-schemas"
+              COPY --chown=65534:65534 --chmod=755 manifests /webroot
+    - name: push
+      retries: 0
+      runAfter:
+        - combine
+      workspaces:
+        - name: output
+      taskSpec:
+        workspaces:
+        - name: output
+          description: Output for storing the schemas
+          mountPath: /home/runner/output
+        steps:
+          - name: push
+            image: ghcr.io/heathcliff26/runner:202606280906@sha256:146432d23681011f69697b91cfafa9a81dbd5cd7b7c0338dc57b336c73d299ab
+            timeout: 15m
+            env:
+              - name: OUTPUT_DIR
+                value: $(workspaces.output.path)/
+              - name: REGISTRY_AUTH_FILE
+                value: /secrets/registry/auth.json
+              - name: COSIGN_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: cosign
+                    key: password
+            script: |
+              #!/bin/sh
+
+              set -ex
+
+              cd "${OUTPUT_DIR}"
+
+              TMP_IMAGES=""
+              IMG=ghcr.io/heathcliff26/kubernetes-schemas:latest
+
+              for arch in amd64 arm64; do
+                podman build --platform="linux/${arch}" -t "${IMG}-${arch}" .
+                podman push "${IMG}-${arch}"
+                TMP_IMAGES="${TMP_IMAGES} ${IMG}-${arch}"
+              done
+
+              podman manifest create ${IMG} ${TMP_IMAGES}
+              podman manifest push ${IMG}
+
+              cosign sign --key /secrets/cosign/cosign.key --recursive --yes ${IMG}
+            securityContext:
+              privileged: true
+            volumeMounts:
+              - name: registry-credentials
+                mountPath: /secrets/registry
+              - name: cosign
+                mountPath: /secrets/cosign
+        volumes:
+          - name: registry-credentials
+            secret:
+              secretName: registry-credentials
+          - name: cosign
+            secret:
+              secretName: cosign
+  finally:
+    - name: failure-notification
+      when:
+        - input: $(tasks.status)
+          operator: in
+          values: ["Failed", "None"]
+      taskRef:
+        name: failure-notification
+      params:
+        - name: repo
+          value: infra
+        - name: pipeline
+          value: $(context.pipeline.name)
+        - name: pipelinerun
+          value: $(context.pipelineRun.name)
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.heathcliff.eu/triggers.tekton.dev/triggertemplate_v1beta1.json
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: publish-schemas-cron
+  namespace: tekton-ci
+spec:
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: publish-schemas-
+        namespace: tekton-ci
+        labels:
+          pipeline: publish-schemas
+          repo: infra
+      spec:
+        pipelineRef:
+          name: publish-schemas
+        workspaces:
+          - name: output
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 100Mi
+                storageClassName: p3-tmp
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: infra-publish-schemas
+  namespace: tekton-ci
+spec:
+  schedule: "0 2 * * 0"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: curl
+            image: quay.io/curl/curl:8.20.0
+            args: ["curl", "-X", "POST", "--data", '{"pipeline": "publish-schemas"}', "el-cron.tekton-ci.svc.cluster.local:8080"]
+          restartPolicy: Never
