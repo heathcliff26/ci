@@ -5,4 +5,5 @@ kind: Kustomization
 resources:
   - clone.yaml
   - failure-notification.yaml
+  - pr.yaml
   - token.yaml

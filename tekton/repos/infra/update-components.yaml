@@ -1,0 +1,140 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.heathcliff.eu/tekton.dev/pipeline_v1.json
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: update-components
+  namespace: tekton-ci
+spec:
+  description: |
+    Run make update and create a Pull Request
+  workspaces:
+    - name: repo
+      description: Workspace for cloning the repository into
+  tasks:
+    - name: token
+      retries: 0
+      taskRef:
+        name: token
+    - name: clone
+      retries: 0
+      taskRef:
+        name: clone
+      params:
+        - name: token
+          value: $(tasks.token.results.token)
+        - name: repo
+          value: infra
+        - name: directory
+          value: infra
+      workspaces:
+        - name: repo
+    - name: update-components
+      retries: 0
+      runAfter:
+        - clone
+      workspaces:
+        - name: repo
+      taskSpec:
+        workspaces:
+        - name: repo
+          description: Repository for running the command
+          mountPath: /home/runner/repo
+        steps:
+          - name: update
+            image: ghcr.io/heathcliff26/runner:202606280906@sha256:146432d23681011f69697b91cfafa9a81dbd5cd7b7c0338dc57b336c73d299ab
+            timeout: 15m
+            env:
+              - name: REPO_DIR
+                value: $(workspaces.repo.path)/infra
+            script: |
+              #!/bin/sh
+
+              set -e
+
+              cd "${REPO_DIR}"
+              make update
+    - name: pr
+      retries: 0
+      runAfter:
+        - update-components
+      taskRef:
+        name: pr
+      params:
+        - name: token
+          value: $(tasks.token.results.token)
+        - name: branch
+          value: update-components
+        - name: message
+          value: |
+              Update components to latest version
+
+              Created via `make update`
+        - name: labels
+          value: update,flux
+        - name: directory
+          value: infra
+      workspaces:
+        - name: repo
+  finally:
+    - name: failure-notification
+      when:
+        - input: $(tasks.status)
+          operator: in
+          values: ["Failed", "None"]
+      taskRef:
+        name: failure-notification
+      params:
+        - name: repo
+          value: infra
+        - name: pipeline
+          value: $(context.pipeline.name)
+        - name: pipelinerun
+          value: $(context.pipelineRun.name)
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.heathcliff.eu/triggers.tekton.dev/triggertemplate_v1beta1.json
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: update-components-cron
+  namespace: tekton-ci
+spec:
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: update-components-
+        namespace: tekton-ci
+        labels:
+          pipeline: update-components
+          repo: infra
+      spec:
+        pipelineRef:
+          name: update-components
+        workspaces:
+          - name: repo
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 100Mi
+                storageClassName: p3-tmp
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: infra-update-components
+  namespace: tekton-ci
+spec:
+  schedule: "30 5 * * 6"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: curl
+            image: quay.io/curl/curl:8.20.0
+            args: ["curl", "-X", "POST", "--data", '{"pipeline": "update-components"}', "el-cron.tekton-ci.svc.cluster.local:8080"]
+          restartPolicy: Never
