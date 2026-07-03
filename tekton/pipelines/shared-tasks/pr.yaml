@@ -1,0 +1,80 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.heathcliff.eu/tekton.dev/task_v1.json
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: pr
+  namespace: tekton-ci
+spec:
+  description: >-
+    Commit the current changes and open a pull request.
+    Will force push to the given branch.
+  params:
+    - name: token
+      type: string
+      description: GitHub access token
+    - name: directory
+      type: string
+      description: Directory relative to the workspace root
+      default: "."
+    - name: branch
+      description: Branch name for the pull request.
+    - name: message
+      type: string
+      description: Commit message and PR Title+Body
+    - name: labels
+      description: Comma separated list of labels to apply to the PR
+      default: ""
+  workspaces:
+    - name: repo
+      description: Workspace containing the repository into
+      mountPath: /workspaces/repo
+  steps:
+    - name: pr
+      image: ghcr.io/heathcliff26/gh-utility:v0.0.3@sha256:7fc5f6c7dd06ab13441e887a830d38bbe0a8b2115c9193082749a1c9ba2ddb6c
+      timeout: 5m
+      env:
+        - name: GITHUB_TOKEN
+          value: $(params.token)
+        - name: WORKDIR
+          value: $(workspaces.repo.path)/$(params.directory)
+        - name: PR_BRANCH
+          value: $(params.branch)
+        - name: GIT_COMMIT_MESSAGE
+          value: $(params.message)
+        - name: PR_LABELS
+          value: $(params.labels)
+      script: |
+        #!/bin/sh
+
+        set -e
+
+        cd "${WORKDIR}"
+
+        git config http.https://github.com/.extraheader "Authorization: Basic $(echo -n "x-access-token:${GITHUB_TOKEN}" | base64)"
+
+        set -x
+
+        git config --global user.email "143866472+bot-ahsoka[bot]@users.noreply.github.com"
+        git config --global user.name "bot-ahsoka[bot]"
+
+        git add .
+        git checkout -b "${PR_BRANCH}"
+        git commit --signoff --message="${GIT_COMMIT_MESSAGE}"
+        git push --force --set-upstream origin "${PR_BRANCH}"
+
+        label_flags=""
+        # shellcheck disable=SC3060
+        for label in ${PR_LABELS//,/ }; do
+            label_flags="${label_flags} --label ${label}"
+        done
+
+        current_pr="$(gh pr list --head "${PR_BRANCH}" --json number --jq ".[0].number")"
+        current_pr="${current_pr//\n}"
+
+        if [ "${current_pr}" == "" ]; then
+            # shellcheck disable=SC2086
+            gh pr create --fill --head "${PR_BRANCH}" ${label_flags}
+        else
+            echo "PR with number ${current_pr} already exists, skipping creation"
+        fi
