@@ -6,6 +6,7 @@ metadata:
   namespace: tekton-ci
 spec:
   schedule: "5 0 * * 0"
+  timezone: "Europe/Berlin"
   jobTemplate:
     spec:
       template:
