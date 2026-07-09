@@ -18,7 +18,7 @@ spec:
       description: Name of the pipeline run
   steps:
     - name: send-email
-      image: quay.io/curl/curl:8.20.0
+      image: quay.io/curl/curl:8.21.0
       timeout: 1m
       env:
         - name: SMTP_USERNAME
