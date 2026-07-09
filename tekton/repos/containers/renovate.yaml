@@ -13,6 +13,6 @@ spec:
         spec:
           containers:
           - name: curl
-            image: quay.io/curl/curl:8.20.0
+            image: quay.io/curl/curl:8.21.0
             args: ["curl", "-X", "POST", "--data", '{"pipeline": "renovate", "repo": "containers"}', "el-cron.tekton-ci.svc.cluster.local:8080"]
           restartPolicy: Never
