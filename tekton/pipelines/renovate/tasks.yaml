@@ -29,7 +29,7 @@ spec:
       default: enabled
   steps:
     - name: renovate
-      image: docker.io/renovate/renovate:43.257.7
+      image: docker.io/renovate/renovate:43.257.8
       timeout: 15m
       env:
         - name: LOG_LEVEL
