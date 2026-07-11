@@ -43,4 +43,4 @@ spec:
       script: |
         #!/bin/sh
 
-        gh repo clone "heathcliff26/${GITHUB_REPO}" "${GITHUB_DIRECTORY}" -- --depth "${GITHUB_FETCH_DEPTH}"
+        gh-utility clone --depth "${GITHUB_FETCH_DEPTH}" "https://github.com/heathcliff26/${GITHUB_REPO}.git" "${GITHUB_DIRECTORY}"
