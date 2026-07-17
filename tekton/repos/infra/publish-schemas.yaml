@@ -32,7 +32,7 @@ spec:
           mountPath: /home/runner/output
         steps:
           - name: extract
-            image: ghcr.io/heathcliff26/runner:13.5.202607111546@sha256:165b822a3c746fc0d74808db8ca5e7474fbdf0038e858e8b4cdc4cc2812757e2
+            image: ghcr.io/heathcliff26/runner:13.6.202607171356@sha256:5ac800482ac4e0cc1b2021c96ef40a5043ce301fd8049391056fae224bb5206c
             timeout: 15m
             env:
               - name: KUBECONFIG
@@ -66,7 +66,7 @@ spec:
           mountPath: /home/runner/output
         steps:
           - name: combine
-            image: ghcr.io/heathcliff26/runner:13.5.202607111546@sha256:165b822a3c746fc0d74808db8ca5e7474fbdf0038e858e8b4cdc4cc2812757e2
+            image: ghcr.io/heathcliff26/runner:13.6.202607171356@sha256:5ac800482ac4e0cc1b2021c96ef40a5043ce301fd8049391056fae224bb5206c
             timeout: 5m
             env:
               - name: OUTPUT_DIR
@@ -102,7 +102,7 @@ spec:
           mountPath: /home/runner/output
         steps:
           - name: push
-            image: ghcr.io/heathcliff26/runner:13.5.202607111546@sha256:165b822a3c746fc0d74808db8ca5e7474fbdf0038e858e8b4cdc4cc2812757e2
+            image: ghcr.io/heathcliff26/runner:13.6.202607171356@sha256:5ac800482ac4e0cc1b2021c96ef40a5043ce301fd8049391056fae224bb5206c
             timeout: 15m
             env:
               - name: OUTPUT_DIR
