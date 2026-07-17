@@ -201,7 +201,7 @@ metadata:
   namespace: tekton-ci
 spec:
   schedule: "0 2 * * 6"
-  timezone: "Europe/Berlin"
+  timeZone: "Europe/Berlin"
   jobTemplate:
     spec:
       # Delete the job after 3 days to free up resources.
