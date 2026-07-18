@@ -65,11 +65,10 @@ spec:
           value: $(tasks.token.results.token)
         - name: branch
           value: update-components
-        - name: message
-          value: |
-              Update components to latest version
-
-              Created via `make update`
+        - name: title
+          value: "Update components to latest version"
+        - name: body
+          value: "Created via `make update`"
         - name: labels
           value: update,flux
         - name: directory
