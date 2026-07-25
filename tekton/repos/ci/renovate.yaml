@@ -5,7 +5,7 @@ metadata:
   name: ci-renovate
   namespace: tekton-ci
 spec:
-  schedule: "0 * 11 * *"
+  schedule: "0 * * * 5"
   timeZone: "Europe/Berlin"
   jobTemplate:
     spec:
