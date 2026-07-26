@@ -2,12 +2,27 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
     {
+      "description": "Auto merge patch container updates",
+      "matchDatasources": ["docker"],
+      "automerge": true,
+      "automergeType": "branch",
+      "matchUpdateTypes": ["digest", "patch"],
+    },
+    {
       "description": "Auto merge renovate container",
       "matchDatasources": ["docker"],
       "automerge": true,
       "automergeType": "branch",
       "matchUpdateTypes": ["digest", "patch", "minor"],
       "matchPackagePatterns": ["docker.io/renovate/renovate"],
+    },
+    {
+      "description": "Auto merge runner container",
+      "matchDatasources": ["docker"],
+      "automerge": true,
+      "automergeType": "branch",
+      "matchUpdateTypes": ["digest", "patch", "minor", "major"],
+      "matchPackagePatterns": ["ghcr.io/heathcliff26/runner"],
     },
   ]
 }
