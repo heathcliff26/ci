@@ -133,7 +133,7 @@ spec:
               podman manifest create ${IMG} ${TMP_IMAGES}
               podman manifest push ${IMG}
 
-              cosign sign --key /secrets/cosign/cosign.key --recursive --yes ${IMG}
+              cosign sign --key /secrets/cosign/cosign.key --recursive --yes --new-bundle-format=false --use-signing-config=false ${IMG}
             securityContext:
               privileged: true
             volumeMounts:
