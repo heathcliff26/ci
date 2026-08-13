@@ -82,7 +82,7 @@ spec:
       description: Body of the issue
   steps:
     - name: issue
-      image: ghcr.io/heathcliff26/gh-utility:v0.1.0@sha256:69ec498769995e0fb47175bbcbb17802577292ec07f0cfc0739a47e6b6b43e27
+      image: ghcr.io/heathcliff26/gh-utility:v0.1.1@sha256:0e7402ee4f62ef3edcebdf967505497e1102c13e97b914aac5c513cdcd40015c
       timeout: 1m
       env:
         - name: GITHUB_TOKEN
