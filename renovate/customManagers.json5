@@ -10,7 +10,7 @@
       ],
       "matchStrings": [
         "#\\srenovate:\\sdatasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?( extractVersion=(?<extractVersion>.*?))?\\s(ENV|ARG) .*?_VERSION=(?<currentValue>.*)\\s"
-      ]
+      ],
     },
     {
       "customType": "regex",
@@ -22,6 +22,16 @@
         "uses: docker://(?<depName>.*?):(?<currentValue>.*)"
       ],
       "datasourceTemplate": "docker",
-    }
+    },
+    {
+      "customType": "regex",
+      "description": "Extract dependencies from variables in shell scripts",
+      "fileMatch": [
+        "(^|/).+\\.sh$",
+      ],
+      "matchStrings": [
+        "#\\srenovate:\\sdatasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?( extractVersion=(?<extractVersion>.*?))?\\s(export )?.*?_VERSION=(?<currentValue>.*)\\s"
+      ],
+    },
   ]
 }
