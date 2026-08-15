@@ -204,8 +204,8 @@ spec:
   timeZone: "Europe/Berlin"
   jobTemplate:
     spec:
-      # Delete the job after 3 days to free up resources.
-      ttlSecondsAfterFinished: 259200
+      # Delete the job after 24h to free up resources.
+      ttlSecondsAfterFinished: 86400
       template:
         spec:
           containers:
