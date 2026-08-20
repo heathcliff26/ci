@@ -13,6 +13,7 @@ resources:
   - go-minesweeper/
   - go-wol/
   - godialog/
+  - golang-copr/
   - infra/
   - infraspace-savegame-editor/
   - kube-upgrade/

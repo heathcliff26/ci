@@ -46,5 +46,7 @@ spec:
           params:
             - name: filter
               value: "body.pipeline.matches('update-components')"
+      bindings:
+      - ref: update-components-cron
       template:
         ref: update-components-cron

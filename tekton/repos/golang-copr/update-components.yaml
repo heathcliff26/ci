@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: infra-update-components
+  name: golang-copr-update-components
   namespace: tekton-ci
 spec:
   schedule: "30 5 * * 6"
@@ -16,5 +16,5 @@ spec:
           containers:
           - name: curl
             image: quay.io/curl/curl:8.21.0
-            args: ["curl", "-X", "POST", "--data", '{"pipeline": "update-components", "repo": "infra"}', "el-cron.tekton-ci.svc.cluster.local:8080"]
+            args: ["curl", "-X", "POST", "--data", '{"pipeline": "update-components", "repo": "golang-copr"}', "el-cron.tekton-ci.svc.cluster.local:8080"]
           restartPolicy: Never
