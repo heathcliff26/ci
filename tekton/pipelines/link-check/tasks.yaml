@@ -46,7 +46,9 @@ spec:
 
         IFS=' ' read -r -a excluded_urls <<< "${EXCLUDE_LINKS}"
         IFS=' ' read -r -a excluded_paths <<< "${EXCLUDE_PATHS}"
-        urls=""
+
+        # Exclude coveralls.io repo links from scan but keep the links to the badge
+        urls="--exclude https:\/\/coveralls.io\/github\/heathcliff26\/[a-zA-Z\-]+$"
         paths=""
         for url in "${excluded_urls[@]}"; do
             if [ -n "${url}" ]; then
