@@ -28,6 +28,7 @@
       "description": "Extract dependencies from variables in shell scripts",
       "fileMatch": [
         "(^|/).+\\.sh$",
+        "(^|/)containerized$"
       ],
       "matchStrings": [
         "#\\srenovate:\\sdatasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?( extractVersion=(?<extractVersion>.*?))?\\s(export )?.*?_VERSION=(?<currentValue>.*)\\s"
