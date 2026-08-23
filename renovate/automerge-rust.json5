@@ -2,12 +2,12 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
     {
-      "description": "Auto merge golang build container",
+      "description": "Auto merge rust build container",
       "matchDatasources": ["docker"],
       "automerge": true,
       "automergeType": "pr",
-      "matchUpdateTypes": ["digest", "patch"],
-      "matchPackagePatterns": ["docker.io/library/golang"],
+      "matchUpdateTypes": ["digest", "patch", "minor"],
+      "matchPackagePatterns": ["docker.io/library/rust"],
     },
     {
       "description": "Auto merge alpine base images",
@@ -18,11 +18,14 @@
       "matchPackagePatterns": ["docker.io/library/alpine"],
     },
     {
-      "description": "Auto merge go-fyne-ci",
+      "description": "Auto merge builder",
       "matchDatasources": ["docker"],
       "automerge": true,
       "automergeType": "pr",
-      "matchPackageNames": ["ghcr.io/heathcliff26/go-fyne-ci"],
+      "matchPackageNames": [
+        "ghcr.io/heathcliff26/rust-builder",
+        "ghcr.io/heathcliff26/rust-qt-builder",
+        ],
       "maxMajorIncrement": 0,
     },
   ]
