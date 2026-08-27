@@ -6,5 +6,10 @@
       "groupSlug": "all-gomod-dependencies",
       "matchManagers": ["gomod"],
     },
+    {
+      "groupName": "builder",
+      "groupSlug": "builder-image",
+      "matchPackageNames": ["ghcr.io/heathcliff26/go-fyne-ci"],
+    },
   ]
 }
