@@ -15,6 +15,6 @@ spec:
         spec:
           containers:
           - name: curl
-            image: quay.io/curl/curl:8.21.0
+            image: quay.io/curl/curl:8.22.0
             args: ["curl", "-X", "POST", "--data", '{"pipeline": "link-check", "repo": "godialog"}', "el-cron.tekton-ci.svc.cluster.local:8080"]
           restartPolicy: Never
