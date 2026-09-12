@@ -13,7 +13,7 @@ spec:
       description: The generated app token
   steps:
     - name: get-token
-      image: ghcr.io/heathcliff26/gh-utility:v0.1.1@sha256:0e7402ee4f62ef3edcebdf967505497e1102c13e97b914aac5c513cdcd40015c
+      image: ghcr.io/heathcliff26/gh-utility:v0.1.2@sha256:bd3505c6dda24acaa2b4c5a0182eff6f9c43b4be0257355b34ce1c09090e776d
       timeout: 1m
       env:
         - name: GITHUB_APP_CLIENT_ID
