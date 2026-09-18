@@ -23,20 +23,11 @@ on:
 jobs:
   generate-reports:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - name: Generate Token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
-        id: app-token
-        with:
-          client-id: "${{ secrets.BOT_APP_CLIENT_ID }}"
-          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
-
-      - name: Checkout main branch
+      - name: Checkout current branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          token: "${{ steps.app-token.outputs.token }}"
-          ref: "main"
-          path: "main"
 
       - name: Setup Golang
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
@@ -46,39 +37,37 @@ jobs:
 
       - name: Generate reports
         run: |
-          ${GITHUB_WORKSPACE}/main/${{ inputs.script }}
+          ${{ inputs.script }}
 
       - name: Coveralls
         if: ${{ inputs.coveralls }}
         uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # v2.3.8
         with:
-          file: "main/${{ inputs.coverprofile }}"
+          file: "${{ inputs.coverprofile }}"
           format: "golang"
 
       - name: Checkout gh-pages
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: ${{ github.event_name != 'pull_request' && github.event_name != 'merge_group' }}
         with:
-          token: "${{ steps.app-token.outputs.token }}"
           ref: "gh-pages"
           path: "gh-pages"
 
       - name: Copy files to gh-pages
+        if: ${{ github.event_name != 'pull_request' && github.event_name != 'merge_group' }}
         run: |
           set -e
-          cp ${GITHUB_WORKSPACE}/main/coverprofiles/*.html ${GITHUB_WORKSPACE}/gh-pages/
+          cp ${GITHUB_WORKSPACE}/coverprofiles/*.html ${GITHUB_WORKSPACE}/gh-pages/
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@4a55954c782fc1ea30b9056cd3e7a2b40ca8887d # v7.2.0
+        if: ${{ github.event_name != 'pull_request' && github.event_name != 'merge_group' }}
         with:
           commit_message: |
             Updated go coverprofiles
 
             Commit: ${{ github.sha }}
-          commit_options: "--signoff"
           repository: "./gh-pages"
-          commit_user_name: "bot-ahsoka[bot]"
-          commit_user_email: "<bot-ahsoka[bot]@users.noreply.github.com>"
-          commit_author: "bot-ahsoka[bot] <bot-ahsoka[bot]@users.noreply.github.com>"
           skip_dirty_check: false
           skip_fetch: true
           skip_checkout: true
