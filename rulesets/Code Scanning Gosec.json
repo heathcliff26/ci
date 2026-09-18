@@ -3,7 +3,7 @@
   "name": "Code Scanning Gosec",
   "target": "branch",
   "source_type": "Repository",
-  "source": "heathcliff26/go-wol",
+  "source": "heathcliff26/netrouse",
   "enforcement": "active",
   "conditions": {
     "ref_name": {

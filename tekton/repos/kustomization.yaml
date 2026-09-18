@@ -11,13 +11,13 @@ resources:
   - fleetlock/
   - gh-utility/
   - go-minesweeper/
-  - go-wol/
   - godialog/
   - golang-copr/
   - infra/
   - infraspace-savegame-editor/
   - kube-upgrade/
   - minecraft-exporter/
+  - netrouse/
   - pinentry-keyring/
   - predictable-path-provisioner/
   - promremote/

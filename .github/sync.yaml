@@ -12,7 +12,7 @@ group:
       heathcliff26/go-minesweeper@main
       heathcliff26/fleetlock@main
       heathcliff26/kube-upgrade@main
-      heathcliff26/go-wol@main
+      heathcliff26/netrouse@main
       heathcliff26/valkey-keepalived@main
       heathcliff26/godialog@main
       heathcliff26/cerberus-mergeguard@main
@@ -43,7 +43,7 @@ group:
       heathcliff26/wsl2-ssh-pageant@main
       heathcliff26/fleetlock@main
       heathcliff26/kube-upgrade@main
-      heathcliff26/go-wol@main
+      heathcliff26/netrouse@main
       heathcliff26/valkey-keepalived@main
       heathcliff26/godialog@main
       heathcliff26/go-minesweeper@main

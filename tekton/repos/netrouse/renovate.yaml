@@ -2,10 +2,10 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: go-wol-link-check
+  name: netrouse-renovate
   namespace: tekton-ci
 spec:
-  schedule: "9 0 * * 0"
+  schedule: "6 * 13 * *"
   timeZone: "Europe/Berlin"
   jobTemplate:
     spec:
@@ -16,5 +16,5 @@ spec:
           containers:
           - name: curl
             image: quay.io/curl/curl:8.22.0
-            args: ["curl", "-X", "POST", "--data", '{"pipeline": "link-check", "repo": "go-wol", "exclude-paths": "vendor"}', "el-cron.tekton-ci.svc.cluster.local:8080"]
+            args: ["curl", "-X", "POST", "--data", '{"pipeline": "renovate", "repo": "netrouse"}', "el-cron.tekton-ci.svc.cluster.local:8080"]
           restartPolicy: Never
