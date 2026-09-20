@@ -34,6 +34,16 @@ on:
         type: string
         default: ""
         required: false
+      cache-from:
+        description: "Use to set cache-from"
+        type: string
+        default: ""
+        required: false
+      cache-to:
+        description: "Use to set cache-to"
+        type: string
+        default: ""
+        required: false
       dry-run:
         description: "Use to disable pushing"
         type: boolean
@@ -126,6 +136,8 @@ jobs:
           build-args: "${{ inputs.build-args }}"
           provenance: false
           sbom: false
+          cache-from: "${{ inputs.cache-from }}"
+          cache-to: "${{ inputs.cache-to }}"
 
       - name: Install Cosign
         if: ${{ ! inputs.dry-run && env.COSIGN_PRIVATE_KEY != '' }}
