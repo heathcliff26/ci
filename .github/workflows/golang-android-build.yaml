@@ -1,0 +1,80 @@
+---
+name: Golang build for android
+
+on:
+  workflow_call:
+    inputs:
+      cache:
+        description: Persist go-build cache between runs
+        type: boolean
+        required: false
+        default: true
+      artifact:
+        description: Artifact(s) to upload
+        type: string
+        required: false
+        default: ""
+      artifact-name:
+        description: The name under which the artifact will be uploaded
+        type: string
+        required: false
+        default: ""
+      cmd:
+        description: The test command to run
+        type: string
+        required: false
+        default: make
+      sign:
+        description: Sign the artifact
+        type: boolean
+        required: false
+        default: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Cache
+        if: ${{ inputs.cache }}
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            /home/runner/.cache/go-build
+          key: "go-build-android"
+
+      - name: Setup golang
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: 'stable'
+          cache-dependency-path: go.sum
+
+      - name: Build Artifact
+        if: ${{ ! inputs.sign }}
+        run: ${{ inputs.cmd }}
+
+      - name: Prepare keystore
+        if: ${{ inputs.sign }}
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 -d > release.keystore
+
+      - name: Build and sign Artifact
+        if: ${{ inputs.sign }}
+        env:
+          KEYSTORE: "release.keystore"
+          KEYSTORE_PASS: "${{ secrets.KEYSTORE_PASS }}"
+          KEYSTORE_ALIAS: "${{ secrets.KEYSTORE_ALIAS }}"
+        run: ${{ inputs.cmd }}
+
+      - name: Upload Artifact
+        if: ${{ inputs.artifact != '' && inputs.artifact-name != '' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: "${{ inputs.artifact-name }}"
+          path: "${{ inputs.artifact }}"
+          retention-days: 14
+          if-no-files-found: error
