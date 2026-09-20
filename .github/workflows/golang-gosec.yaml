@@ -14,6 +14,11 @@ on:
         type: string
         required: false
         default: './...'
+      upload:
+        description: Upload the results to CodeQL
+        type: boolean
+        required: false
+        default: true
 
 
 jobs:
@@ -29,6 +34,7 @@ jobs:
           args: "-no-fail -fmt sarif -out results.sarif ${{ inputs.args }}"
 
       - name: Upload SARIF file
+        if: ${{ inputs.upload }}
         uses: github/codeql-action/upload-sarif@1c5b675653bb5c22dbe9b12b556ec555138e09fd # v4.38.1
         with:
           sarif_file: results.sarif
