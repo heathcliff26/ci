@@ -74,6 +74,16 @@
       "matchUpdateTypes": ["patch"],
       "semanticCommitType": "fix",
       "semanticCommitScope": "github-action"
-    }
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": [
+        "ghcr.io/heathcliff26/rust-builder",
+        "ghcr.io/heathcliff26/rust-qt-builder",
+        "ghcr.io/heathcliff26/go-fyne-ci",
+        ],
+      "semanticCommitType": "fix",
+      "semanticCommitScope": "builder"
+    },
   ]
 }
