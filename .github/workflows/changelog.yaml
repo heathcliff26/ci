@@ -56,6 +56,26 @@ jobs:
             --tag ${{ inputs.tag }} \
             "${last_version}..HEAD"
 
+      - name: Create appstream script
+        run: |
+          echo '#!/bin/bash' > gh_action_update_appstream.sh
+          echo 'set -e' >> gh_action_update_appstream.sh
+          echo 'dnf install -y appstream' >> gh_action_update_appstream.sh
+          echo 'for file in *.metainfo.xml; do' >> gh_action_update_appstream.sh
+          echo '  [ ! -f "${file}" ] && continue' >> gh_action_update_appstream.sh
+          echo '  echo "Updating ${file}"' >> gh_action_update_appstream.sh
+          echo '  appstreamcli news-to-metainfo --format=markdown ${{ inputs.file }} "${file}"' >> gh_action_update_appstream.sh
+          echo 'done' >> gh_action_update_appstream.sh
+
+      - name: Update appstream metainfo
+        uses: docker://registry.fedoraproject.org/fedora:latest
+        with:
+          entrypoint: /bin/bash
+          args: gh_action_update_appstream.sh
+
+      - name: Delete appstream script
+        run: rm -f gh_action_update_appstream.sh
+
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@4a55954c782fc1ea30b9056cd3e7a2b40ca8887d # v7.2.0
         with:
@@ -70,7 +90,6 @@ jobs:
           skip_checkout: true
 
       - name: Tag
-        if: ${{ github.ref_name != inputs.tag }}
         run: |
           set -ex
           git tag "${{ inputs.tag }}"
