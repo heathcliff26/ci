@@ -76,11 +76,34 @@ jobs:
       - name: Delete appstream script
         run: rm -f gh_action_update_appstream.sh
 
+      - name: Bump rust crate version
+        if: ${{ hashFiles('Cargo.toml') != '' }}
+        env:
+          RELEASE_VERSION: "${{ inputs.tag }}"
+        run: |
+          set -e
+          cargo install cargo-edit
+          cargo set-version "${RELEASE_VERSION#v}"
+
+      - name: Create commit message
+        id: commit-message
+        run: |
+          if [ -f Cargo.toml ]; then
+            echo "chore(release): Bump crate version to ${{ inputs.tag }}" > commit_message.txt
+            echo "" >> commit_message.txt
+            echo "Additionally update changelog" >> commit_message.txt
+          else
+            echo "chore(release): Update changelog for ${{ inputs.tag }}" > commit_message.txt
+          fi
+          echo "message<<EOF" >> $GITHUB_OUTPUT
+          cat commit_message.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          rm commit_message.txt
+
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@4a55954c782fc1ea30b9056cd3e7a2b40ca8887d # v7.2.0
         with:
-          commit_message: |
-            chore(release): Update changelog for ${{ inputs.tag }}
+          commit_message: "${{ steps.commit-message.outputs.message }}"
           commit_options: "--signoff"
           commit_user_name: "bot-ahsoka[bot]"
           commit_user_email: "<bot-ahsoka[bot]@users.noreply.github.com>"
