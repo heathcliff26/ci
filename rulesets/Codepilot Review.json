@@ -1,9 +1,9 @@
 {
-  "id": 11917788,
+  "id": 5030217,
   "name": "Codepilot Review",
   "target": "branch",
   "source_type": "Repository",
-  "source": "heathcliff26/cultures-trainer",
+  "source": "heathcliff26/netrouse",
   "enforcement": "active",
   "conditions": {
     "ref_name": {
@@ -15,23 +15,9 @@
   },
   "rules": [
     {
-      "type": "pull_request",
-      "parameters": {
-        "required_approving_review_count": 0,
-        "dismiss_stale_reviews_on_push": false,
-        "required_reviewers": [],
-        "require_code_owner_review": false,
-        "require_last_push_approval": false,
-        "required_review_thread_resolution": false,
-        "allowed_merge_methods": [
-          "rebase"
-        ]
-      }
-    },
-    {
       "type": "copilot_code_review",
       "parameters": {
-        "review_on_push": true,
+        "review_on_push": false,
         "review_draft_pull_requests": false
       }
     }

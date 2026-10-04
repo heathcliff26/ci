@@ -1,5 +1,5 @@
 {
-  "id": 5077614,
+  "id": 23888022,
   "name": "Code Scanning Gosec",
   "target": "branch",
   "source_type": "Repository",
@@ -44,6 +44,11 @@
     {
       "actor_id": 5,
       "actor_type": "RepositoryRole",
+      "bypass_mode": "always"
+    },
+    {
+      "actor_id": 384606,
+      "actor_type": "Integration",
       "bypass_mode": "always"
     }
   ]
