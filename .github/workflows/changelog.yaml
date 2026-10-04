@@ -1,0 +1,81 @@
+---
+name: "Changelog"
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        description: "Tag to create"
+        type: string
+        required: true
+      overwrite:
+        description: "Overwrite existing tag"
+        type: boolean
+        required: false
+        default: false
+      file:
+        description: "Changelog file"
+        type: string
+        required: false
+        default: "CHANGELOG.md"
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        id: app-token
+        with:
+          client-id: "${{ secrets.BOT_APP_CLIENT_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          token: "${{ steps.app-token.outputs.token }}"
+          fetch-depth: 0
+
+      - name: Install git-cliff
+        uses: taiki-e/install-action@861a07ce7084f55488e375df125cdc99bba60eb7 # v2.87.23
+        with:
+          tool: git-cliff
+
+      - name: Create Changelog
+        run: |
+          set -e
+          git-cliff \
+            --config-url https://raw.githubusercontent.com/heathcliff26/ci/refs/heads/main/git-cliff/cliff.toml \
+            --output ${{ inputs.file }}
+          last_version="$(grep -m 1 Version ${{ inputs.file }} | awk '{printf $2}')"
+          git-cliff \
+            --config-url https://raw.githubusercontent.com/heathcliff26/ci/refs/heads/main/git-cliff/cliff.toml \
+            --prepend ${{ inputs.file }} \
+            --tag ${{ inputs.tag }} \
+            "${last_version}..HEAD"
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@4a55954c782fc1ea30b9056cd3e7a2b40ca8887d # v7.2.0
+        with:
+          commit_message: |
+            chore(release): Update changelog for ${{ inputs.tag }}
+          commit_options: "--signoff"
+          commit_user_name: "bot-ahsoka[bot]"
+          commit_user_email: "<bot-ahsoka[bot]@users.noreply.github.com>"
+          commit_author: "bot-ahsoka[bot] <bot-ahsoka[bot]@users.noreply.github.com>"
+          skip_dirty_check: false
+          skip_fetch: true
+          skip_checkout: true
+
+      - name: Tag
+        if: ${{ github.ref_name != inputs.tag }}
+        run: |
+          set -ex
+          git tag "${{ inputs.tag }}"
+          if [ "${{ inputs.overwrite }}" = "true" ]; then
+            git push origin "${{ inputs.tag }}" --force
+          else
+            git push origin "${{ inputs.tag }}"
+          fi
