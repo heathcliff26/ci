@@ -1,0 +1,33 @@
+---
+name: Commit Check
+
+on:
+  pull_request:
+    branches: ["main"]
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - edited
+  workflow_call:
+
+jobs:
+  commit-check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Commit Check
+        uses: commit-check/commit-check-action@fd3d923eab0876650f261d2a75572e8161a9a58e # v2.16.0
+        with:
+          message: true
+          branch: false
+          author-name: true
+          author-email: true
+          pr-title: true
