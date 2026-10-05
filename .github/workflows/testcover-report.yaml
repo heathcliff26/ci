@@ -29,8 +29,16 @@ jobs:
   generate-reports:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
     steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        if: ${{ github.event_name != 'pull_request' && github.event_name != 'merge_group' }}
+        id: app-token
+        with:
+          client-id: "${{ secrets.BOT_APP_CLIENT_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+
       - name: Checkout current branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -40,6 +48,15 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ${{ inputs.additional-packages }}
         shell: bash
+
+      - name: Cache rust
+        if: ${{ hashFiles('Cargo.lock') != '' }}
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.cargo
+            target/
+          key: cargo-testcover-${{ hashFiles('Cargo.lock') }}
 
       - name: Generate reports
         run: |
@@ -58,6 +75,7 @@ jobs:
         with:
           ref: "gh-pages"
           path: "gh-pages"
+          token: "${{ steps.app-token.outputs.token }}"
 
       - name: Copy files to gh-pages
         if: ${{ github.event_name != 'pull_request' && github.event_name != 'merge_group' }}
@@ -74,6 +92,10 @@ jobs:
 
             Commit: ${{ github.sha }}
           repository: "./gh-pages"
+          commit_options: "--signoff"
+          commit_user_name: "bot-ahsoka[bot]"
+          commit_user_email: "<bot-ahsoka[bot]@users.noreply.github.com>"
+          commit_author: "bot-ahsoka[bot] <bot-ahsoka[bot]@users.noreply.github.com>"
           skip_dirty_check: false
           skip_fetch: true
           skip_checkout: true

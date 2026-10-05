@@ -33,6 +33,16 @@ on:
         type: string
         required: false
         default: ""
+      cache:
+        description: Persist cache between runs
+        type: boolean
+        required: false
+        default: false
+      cache-prefix:
+        description: Prefix for the cache key
+        type: string
+        required: false
+        default: "cargo"
 
 jobs:
   run-script:
@@ -49,6 +59,15 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ${{ inputs.additional-packages }}
         shell: bash
+
+      - name: Cache rust
+        if: ${{ inputs.cache && hashFiles('Cargo.lock') != '' }}
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.cargo
+            target/
+          key: ${{ inputs.cache-prefix }}-${{ inputs.architecture }}-${{ hashFiles('Cargo.lock') }}
 
       - name: Run script
         run: ${{ inputs.cmd }}
