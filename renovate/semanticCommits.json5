@@ -82,8 +82,7 @@
         "ghcr.io/heathcliff26/rust-qt-builder",
         "ghcr.io/heathcliff26/go-fyne-ci",
         ],
-      "semanticCommitType": "fix",
-      "semanticCommitScope": "builder"
+      "commitMessagePrefix": "chore(builder): "
     },
   ]
 }
