@@ -50,7 +50,7 @@ jobs:
           path: |
             /home/runner/.cache/go-build
             C:\Users\runneradmin\AppData\Local\go-build
-          key: golang-unit-tests
+          key: golang-unit-tests-${{ runner.os }}
 
       - name: Run tests
         run: ${{ inputs.cmd }}
