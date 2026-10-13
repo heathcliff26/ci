@@ -4,14 +4,6 @@ name: "Labels Check"
 
 on:
   workflow_call:
-  pull_request:
-    branches: ["main"]
-    types:
-      - opened
-      - synchronize
-      - reopened
-      - labeled
-      - unlabeled
 
 jobs:
   check-labels:

@@ -28,6 +28,8 @@ group:
         dest: .github/ISSUE_TEMPLATE
       - source: .github/release.yaml
         dest: .github/release.yaml
+      - source: .github/workflows/pr.yaml
+        dest: .github/workflows/pr.yaml
 
   - repos: |
       heathcliff26/infra@main

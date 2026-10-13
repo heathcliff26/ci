@@ -12,6 +12,7 @@ on:
       - .github/sync.yaml
       - .github/ISSUE_TEMPLATE
       - .github/release.yaml
+      - .github/workflows/pr.yaml
       - .editorconfig
       - .vscode/*
       - .golangci.yml
@@ -43,3 +44,4 @@ jobs:
           COMMIT_EACH_FILE: "false"
           GIT_EMAIL: "<bot-ahsoka[bot]@users.noreply.github.com>"
           GIT_USERNAME: "bot-ahsoka[bot]"
+          COMMIT_PREFIX: "chore:"
