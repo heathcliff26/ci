@@ -31,7 +31,7 @@ spec:
       mountPath: /workspaces/repo
   steps:
     - name: pr
-      image: ghcr.io/heathcliff26/gh-utility:v0.1.2@sha256:bd3505c6dda24acaa2b4c5a0182eff6f9c43b4be0257355b34ce1c09090e776d
+      image: ghcr.io/heathcliff26/gh-utility:v0.1.3@sha256:2a78202d23ce50088833b710a32c11ae3eb3bc1e3036582e57b16dde9c0685dc
       timeout: 5m
       env:
         - name: GITHUB_TOKEN
