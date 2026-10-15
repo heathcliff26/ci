@@ -1,0 +1,95 @@
+---
+name: "Labels Set"
+
+on:
+  workflow_call:
+
+jobs:
+  check-labels:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+
+      - name: Parse Commits & Apply Labels
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            // Get all commits in the PR
+            const { data: commits } = await github.rest.pulls.listCommits({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+
+            const labelsToAdd = new Set();
+
+            const typeToLabel = {
+              feat: 'enhancement',
+              fix: 'bug',
+              doc: 'documentation',
+              docs: 'documentation',
+              refactor: 'refactor',
+              perf: 'performance',
+              chore: 'chore',
+              style: 'style',
+              test: 'test',
+              security: 'security'
+            };
+
+            for (const commit of commits) {
+              const msg = commit.commit.message;
+
+              // Check for Conventional Commit prefix (e.g., feat(ui): or fix!:)
+              const match = msg.match(/^([a-z]+)(\([^\)]+\))?!?:/i);
+              if (match) {
+                const type = match[1].toLowerCase();
+                if (typeToLabel[type]) {
+                  labelsToAdd.add(typeToLabel[type]);
+                }
+              }
+
+              // Check for breaking changes
+              if (msg.includes('BREAKING CHANGE:') || msg.match(/^[a-z]+(\([^\)]+\))?!:/i)) {
+                labelsToAdd.add('breaking-change');
+              }
+            }
+
+            const managedLabels = new Set([
+              ...Object.values(typeToLabel),
+              'breaking-change'
+            ]);
+
+            const { data: currentLabels } = await github.rest.issues.listLabelsOnIssue({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+            });
+
+            const labelsToRemove = currentLabels
+              .map(label => label.name)
+              .filter(label => managedLabels.has(label) && !labelsToAdd.has(label));
+
+            if (labelsToAdd.size > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                labels: Array.from(labelsToAdd)
+              });
+            }
+
+            for (const label of labelsToRemove) {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                name: label
+              });
+            }
