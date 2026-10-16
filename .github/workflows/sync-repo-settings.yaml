@@ -1,0 +1,51 @@
+---
+name: "Sync Repository Settings"
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: "Dry Run"
+        type: boolean
+        default: true
+  push:
+    branches: ["main"]
+    paths:
+      - .github/settings-config.yaml
+      - rulesets/*.json
+  pull_request:
+    branches: ["main"]
+    paths:
+      - .github/settings-config.yaml
+      - rulesets/*.json
+      - .github/workflows/sync-repo-settings.yaml
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    name: Sync Settings
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        id: app-token
+        with:
+          client-id: "${{ secrets.BOT_APP_CLIENT_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+          owner: "${{ github.repository_owner }}"
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          token: "${{ steps.app-token.outputs.token }}"
+
+      - name: Sync Settings
+        uses: joshjohanning/bulk-github-repo-settings-sync-action@f4c247dd32d37e0ffdb0f728e7c90bbe0b67d5f6 # v2.12.0
+        with:
+          github-token: "${{ steps.app-token.outputs.token }}"
+          repositories-file: ".github/settings-config.yaml"
+          dry-run: ${{ inputs.dry-run || github.event_name == 'pull_request' }}

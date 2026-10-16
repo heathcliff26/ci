@@ -1,0 +1,64 @@
+owner: heathcliff26
+
+rules:
+  # Default rules for all repositories
+  - selector:
+      repos:
+        # Golang Repositories
+        - heathcliff26/cultures-trainer
+        - heathcliff26/fleetlock
+        - heathcliff26/gh-utility
+        - heathcliff26/go-minesweeper
+        - heathcliff26/godialog
+        - heathcliff26/infraspace-savegame-editor
+        - heathcliff26/kube-upgrade
+        - heathcliff26/minecraft-exporter
+        - heathcliff26/netrouse
+        - heathcliff26/pinentry-keyring
+        - heathcliff26/predictable-path-provisioner
+        - heathcliff26/promremote
+        - heathcliff26/simple-fileserver
+        - heathcliff26/speedtest-exporter
+        - heathcliff26/valkey-keepalived
+        # Rust Repositories
+        - heathcliff26/cerberus-mergeguard
+        - heathcliff26/cloudflare-dyndns
+        - heathcliff26/turbo-clicker
+        # Other Repositories
+        - heathcliff26/golang-copr
+    settings:
+      allow-squash-merge: false
+      allow-merge-commit: false
+      allow-rebase-merge: true
+      allow-auto-merge: true
+      delete-branch-on-merge: true
+      wiki: false
+      code-scanning: true
+      secret-scanning: true
+      secret-scanning-push-protection: true
+      rulesets-file: |
+        rulesets/Cerberus.json
+        rulesets/CodeQL.json
+        rulesets/Common Rules.json
+        rulesets/Copilot Review.json
+      delete-unmanaged-rulesets: true
+  # Rules for "codeless" repository
+  - selector:
+      repos:
+        - heathcliff26/containers
+        - heathcliff26/ci
+    settings:
+      allow-squash-merge: false
+      allow-merge-commit: false
+      allow-rebase-merge: true
+      allow-auto-merge: true
+      delete-branch-on-merge: true
+      wiki: false
+      code-scanning: true
+      secret-scanning: true
+      secret-scanning-push-protection: true
+      rulesets-file: |
+        rulesets/Cerberus.json
+        rulesets/CodeQL.json
+        rulesets/Copilot Review.json
+      delete-unmanaged-rulesets: true

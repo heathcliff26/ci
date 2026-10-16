@@ -1,6 +1,6 @@
 {
   "id": 5030217,
-  "name": "Codepilot Review",
+  "name": "Copilot Review",
   "target": "branch",
   "source_type": "Repository",
   "source": "heathcliff26/netrouse",
