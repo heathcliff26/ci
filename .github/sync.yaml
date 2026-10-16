@@ -1,23 +1,26 @@
 ---
 group:
   - repos: |
+      heathcliff26/cultures-trainer@main
+      heathcliff26/fleetlock@main
+      heathcliff26/gh-utility@main
+      heathcliff26/go-minesweeper@main
+      heathcliff26/godialog@main
       heathcliff26/infraspace-savegame-editor@main
-      heathcliff26/containers@main
-      heathcliff26/promremote@main
-      heathcliff26/cloudflare-dyndns@main
+      heathcliff26/kube-upgrade@main
       heathcliff26/minecraft-exporter@main
+      heathcliff26/netrouse@main
+      heathcliff26/pinentry-keyring@main
+      heathcliff26/predictable-path-provisioner@main
+      heathcliff26/promremote@main
       heathcliff26/simple-fileserver@main
       heathcliff26/speedtest-exporter@main
-      heathcliff26/go-minesweeper@main
-      heathcliff26/fleetlock@main
-      heathcliff26/kube-upgrade@main
-      heathcliff26/netrouse@main
       heathcliff26/valkey-keepalived@main
-      heathcliff26/godialog@main
       heathcliff26/cerberus-mergeguard@main
+      heathcliff26/cloudflare-dyndns@main
       heathcliff26/turbo-clicker@main
-      heathcliff26/pinentry-keyring@main
-      heathcliff26/cultures-trainer@main
+      heathcliff26/golang-copr@main
+      heathcliff26/containers@main
     files:
       - source: .editorconfig
         dest: .editorconfig
@@ -37,19 +40,21 @@ group:
         dest: .vscode/extensions.json
 
   - repos: |
-      heathcliff26/promremote@main
+      heathcliff26/cultures-trainer@main
+      heathcliff26/fleetlock@main
+      heathcliff26/gh-utility@main
+      heathcliff26/go-minesweeper@main
+      heathcliff26/godialog@main
+      heathcliff26/infraspace-savegame-editor@main
+      heathcliff26/kube-upgrade@main
       heathcliff26/minecraft-exporter@main
+      heathcliff26/netrouse@main
+      heathcliff26/pinentry-keyring@main
+      heathcliff26/predictable-path-provisioner@main
+      heathcliff26/promremote@main
       heathcliff26/simple-fileserver@main
       heathcliff26/speedtest-exporter@main
-      heathcliff26/fleetlock@main
-      heathcliff26/kube-upgrade@main
-      heathcliff26/netrouse@main
       heathcliff26/valkey-keepalived@main
-      heathcliff26/godialog@main
-      heathcliff26/go-minesweeper@main
-      heathcliff26/infraspace-savegame-editor@main
-      heathcliff26/pinentry-keyring@main
-      heathcliff26/cultures-trainer@main
     files:
       - source: renovate/configs/golang.json5
         dest: .github/renovate.json5
@@ -59,8 +64,8 @@ group:
         dest: .sourcery.yaml
 
   - repos: |
-      heathcliff26/cloudflare-dyndns@main
       heathcliff26/cerberus-mergeguard@main
+      heathcliff26/cloudflare-dyndns@main
       heathcliff26/turbo-clicker@main
     files:
       - source: renovate/configs/rust.json5
