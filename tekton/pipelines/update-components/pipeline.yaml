@@ -68,7 +68,7 @@ spec:
         - name: branch
           value: update-components
         - name: title
-          value: "Update components to latest version"
+          value: "chore: Update components to latest version"
         - name: body
           value: "Created via `make update`"
         - name: labels
