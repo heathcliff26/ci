@@ -1,0 +1,114 @@
+---
+name: "Sync Labels"
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: "Dry Run"
+        type: boolean
+        default: true
+  push:
+    branches: ["main"]
+    paths:
+      - .github/labels.yaml
+  pull_request:
+    branches: ["main"]
+    paths:
+      - .github/labels.yaml
+      - .github/workflows/sync-labels.yaml
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    name: Sync Labels
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        id: app-token
+        with:
+          client-id: "${{ secrets.BOT_APP_CLIENT_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+          owner: "${{ github.repository_owner }}"
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          token: "${{ steps.app-token.outputs.token }}"
+
+      - name: Sync Labels
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          DRY_RUN: ${{ inputs.dry-run || github.event_name == 'pull_request' }}
+        with:
+          github-token: "${{ steps.app-token.outputs.token }}"
+          script: |
+            const fs = require('fs');
+
+            // 1. Read and parse labels configuration
+            const fileContent = fs.readFileSync('.github/labels.json', 'utf8');
+            const labelsConfig = JSON.parse(fileContent);
+            const user = context.repo.owner;
+
+            core.info(`Fetching repositories for user: ${user}`);
+
+            // 2. Fetch all user repositories (handles pagination)
+            const repos = await github.paginate(github.rest.repos.listForUser, {
+              username: user,
+              per_page: 100,
+            });
+
+            core.info(`Found ${repos.length} repositories to process.`);
+
+            // 3. Loop through repositories and sync labels
+            for (const repo of repos) {
+              if (repo.archived) {
+                core.info(`Skipping archived repo: ${repo.name}`);
+                continue;
+              }
+
+              if (repo.fork) {
+                core.info(`Skipping fork: ${repo.name}`);
+                continue;
+              }
+
+              core.info(`Processing repo: ${repo.full_name}`);
+
+              if (process.env.DRY_RUN == 'true') {
+                core.info(`Dry-run skipping repo: ${repo.full_name}`);
+                continue;
+              }
+
+              for (const label of labelsConfig) {
+                try {
+                  // Try updating existing label
+                  await github.rest.issues.updateLabel({
+                    owner: user,
+                    repo: repo.name,
+                    name: label.name,
+                    color: label.color,
+                    description: label.description || '',
+                  });
+                  core.info(`  Updated label: "${label.name}" in ${repo.name}`);
+                } catch (error) {
+                  if (error.status === 404) {
+                    // Create label if it doesn't exist
+                    await github.rest.issues.createLabel({
+                      owner: user,
+                      repo: repo.name,
+                      name: label.name,
+                      color: label.color,
+                      description: label.description || '',
+                    });
+                    core.info(`  Created label: "${label.name}" in ${repo.name}`);
+                  } else {
+                    core.error(`  Failed label "${label.name}" in ${repo.name}: ${error.message}`);
+                  }
+                }
+              }
+            }

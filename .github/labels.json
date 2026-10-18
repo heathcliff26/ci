@@ -1,0 +1,7 @@
+[
+  {
+    "name": "breaking-change",
+    "color": "b60205",
+    "description": "Mark a breaking change for the new release."
+  }
+]
