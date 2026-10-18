@@ -2,6 +2,81 @@
   {
     "name": "breaking-change",
     "color": "b60205",
-    "description": "Mark a breaking change for the new release."
+    "description": "Breaking change for consumers"
+  },
+  {
+    "name": "feature",
+    "color": "a2eeef",
+    "description": "New feature"
+  },
+  {
+    "name": "refactor",
+    "color": "5319e7",
+    "description": "Refactors code"
+  },
+  {
+    "name": "performance",
+    "color": "5319e7",
+    "description": "Improves or measures performance"
+  },
+  {
+    "name": "chore",
+    "color": "5319e7",
+    "description": "Simple or miscellaneos update"
+  },
+  {
+    "name": "style",
+    "color": "5319e7",
+    "description": "Update to app appearance"
+  },
+  {
+    "name": "test",
+    "color": "5319e7",
+    "description": "Changes to tests"
+  },
+  {
+    "name": "security",
+    "color": "d93f0b",
+    "description": "Changes with security implications"
+  },
+  {
+    "name": "renovate/container",
+    "color": "006b75",
+    "description": "Automated container image update"
+  },
+  {
+    "name": "renovate/github-action",
+    "color": "006b75",
+    "description": "Automated github-action update"
+  },
+  {
+    "name": "renovate/github-release",
+    "color": "006b75",
+    "description": "Automated update from GitHub Release"
+  },
+  {
+    "name": "type/digest",
+    "color": "1d76db",
+    "description": "Dependency update type digest"
+  },
+  {
+    "name": "type/major",
+    "color": "1d76db",
+    "description": "Dependency update type major"
+  },
+  {
+    "name": "type/minor",
+    "color": "1d76db",
+    "description": "Dependency update type minor"
+  },
+  {
+    "name": "type/patch",
+    "color": "1d76db",
+    "description": "Dependency update type patch"
+  },
+  {
+    "name": "sync",
+    "color": "006b75",
+    "description": "Automated file sync"
   }
 ]
