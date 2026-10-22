@@ -79,7 +79,7 @@ jobs:
         if: ${{ ! inputs.dry-run }}
         with:
           registry: ghcr.io
-          username: "${{ github.actor }}"
+          username: "${{ github.repository_owner }}"
           password: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Log in to the Dockerhub
@@ -172,7 +172,7 @@ jobs:
         if: ${{ ! inputs.dry-run }}
         with:
           registry: ghcr.io
-          username: "${{ github.actor }}"
+          username: "${{ github.repository_owner }}"
           password: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Log in to the Dockerhub
