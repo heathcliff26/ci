@@ -55,11 +55,10 @@ jobs:
             const labelsConfig = JSON.parse(fileContent);
             const user = context.repo.owner;
 
-            core.info(`Fetching repositories for user: ${user}`);
+            core.info(`Fetching repositories for: ${user}`);
 
-            // 2. Fetch all user repositories (handles pagination)
-            const repos = await github.paginate(github.rest.repos.listForUser, {
-              username: user,
+            // 2. Fetch all repositories accessible by the app (handles pagination)
+            const repos = await github.paginate(github.rest.apps.listReposAccessibleToInstallation, {
               per_page: 100,
             });
 
