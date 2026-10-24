@@ -83,5 +83,10 @@
     "name": "sync",
     "color": "006b75",
     "description": "Automated file sync"
+  },
+  {
+    "name": "update",
+    "color": "006b75",
+    "description": "Automated component update"
   }
 ]
