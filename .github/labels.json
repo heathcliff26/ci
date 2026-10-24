@@ -55,6 +55,11 @@
     "description": "Automated update from GitHub Release"
   },
   {
+    "name": "renovate/helm",
+    "color": "006b75",
+    "description": "Automated update for Helm chart"
+  },
+  {
     "name": "type/digest",
     "color": "1d76db",
     "description": "Dependency update type digest"
