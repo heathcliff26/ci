@@ -36,8 +36,12 @@ group:
   - repos: |
       heathcliff26/infra@main
     files:
+      - source: .editorconfig
+        dest: .editorconfig
       - source: .vscode/extensions.json
         dest: .vscode/extensions.json
+      - source: .github/workflows/pr.yaml
+        dest: .github/workflows/pr.yaml
 
   - repos: |
       heathcliff26/cultures-trainer@main
