@@ -1,5 +1,15 @@
 [
   {
+    "name": "do-not-merge",
+    "color": "b60205",
+    "description": "Do not merge this PR"
+  },
+  {
+    "name": "hold",
+    "color": "b60205",
+    "description": "Do not merge this PR"
+  },
+  {
     "name": "breaking-change",
     "color": "b60205",
     "description": "Breaking change for consumers"
