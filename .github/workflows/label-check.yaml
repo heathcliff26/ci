@@ -10,9 +10,8 @@ jobs:
     permissions:
       pull-requests: read
     steps:
-      - name: Check for do-not-merge
-        id: do-not-merge
-        uses: docker://agilepathway/pull-request-label-checker:v1.6.115
+      - name: Check labels
+        uses: agilepathway/label-checker@v2.0.58
         with:
           repo_token: ${{ github.token }}
-          none_of: do-not-merge
+          none_of: do-not-merge,hold
