@@ -1,0 +1,51 @@
+{
+  "id": 25818852,
+  "name": "PR Check",
+  "target": "branch",
+  "source_type": "Repository",
+  "source": "heathcliff26/ci",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": {
+      "exclude": [],
+      "include": [
+        "~DEFAULT_BRANCH"
+      ]
+    }
+  },
+  "rules": [
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "strict_required_status_checks_policy": false,
+        "do_not_enforce_on_create": false,
+        "required_status_checks": [
+          {
+            "context": "check-labels / check-labels",
+            "integration_id": 15368
+          },
+          {
+            "context": "set-labels / set-labels",
+            "integration_id": 15368
+          },
+          {
+            "context": "commit-check / commit-check",
+            "integration_id": 15368
+          }
+        ]
+      }
+    }
+  ],
+  "bypass_actors": [
+    {
+      "actor_id": 5,
+      "actor_type": "RepositoryRole",
+      "bypass_mode": "always"
+    },
+    {
+      "actor_id": 384606,
+      "actor_type": "Integration",
+      "bypass_mode": "always"
+    }
+  ]
+}

@@ -41,6 +41,7 @@ rules:
         rulesets/CodeQL.json
         rulesets/Common Rules.json
         rulesets/Copilot Review.json
+        rulesets/PR Check.json
       delete-unmanaged-rulesets: true
   # Rules for "codeless" repository
   - selector:
@@ -61,4 +62,5 @@ rules:
         rulesets/Cerberus.json
         rulesets/CodeQL.json
         rulesets/Copilot Review.json
+        rulesets/PR Check.json
       delete-unmanaged-rulesets: true
