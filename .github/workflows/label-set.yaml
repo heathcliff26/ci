@@ -5,7 +5,7 @@ on:
   workflow_call:
 
 jobs:
-  check-labels:
+  set-labels:
     runs-on: ubuntu-latest
     permissions:
       contents: read
