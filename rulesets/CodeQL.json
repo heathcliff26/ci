@@ -1,9 +1,9 @@
 {
-  "id": 3157592,
+  "id": 3013455,
   "name": "CodeQL",
   "target": "branch",
   "source_type": "Repository",
-  "source": "heathcliff26/netrouse",
+  "source": "heathcliff26/ci",
   "enforcement": "active",
   "conditions": {
     "ref_name": {
@@ -14,18 +14,6 @@
     }
   },
   "rules": [
-    {
-      "type": "code_scanning",
-      "parameters": {
-        "code_scanning_tools": [
-          {
-            "tool": "CodeQL",
-            "security_alerts_threshold": "medium_or_higher",
-            "alerts_threshold": "errors"
-          }
-        ]
-      }
-    },
     {
       "type": "required_status_checks",
       "parameters": {
