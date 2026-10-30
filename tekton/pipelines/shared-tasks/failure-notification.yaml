@@ -31,6 +31,12 @@ spec:
             secretKeyRef:
               name: mail-account
               key: password
+        - name: GITHUB_REPO
+          value: $(params.repo)
+        - name: PIPELINE
+          value: $(params.pipeline)
+        - name: PIPELINERUN
+          value: $(params.pipelinerun)
       script: |
         #!/bin/sh
 
@@ -45,8 +51,8 @@ spec:
               -T - <<EOF
         From: ${FROM}
         To: ${TO}
-        Subject: Failed $(params.repo)/$(params.pipeline) run $(params.pipelinerun)
+        Subject: Failed ${GITHUB_REPO}/${PIPELINE} run ${PIPELINERUN}
 
-        Logs: https://tekton.heathcliff.eu/#/namespaces/tekton-ci/pipelineruns/$(params.pipelinerun)
-        Repository: github.com/heathcliff26/$(params.repo)
+        Logs: https://tekton.heathcliff.eu/#/namespaces/tekton-ci/pipelineruns/${PIPELINERUN}
+        Repository: github.com/heathcliff26/${GITHUB_REPO}
         EOF
