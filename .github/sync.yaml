@@ -7,6 +7,7 @@ group:
       heathcliff26/go-minesweeper@main
       heathcliff26/godialog@main
       heathcliff26/infraspace-savegame-editor@main
+      heathcliff26/kde-trayrotate@main
       heathcliff26/kube-upgrade@main
       heathcliff26/minecraft-exporter@main
       heathcliff26/netrouse@main
@@ -48,6 +49,7 @@ group:
       heathcliff26/go-minesweeper@main
       heathcliff26/godialog@main
       heathcliff26/infraspace-savegame-editor@main
+      heathcliff26/kde-trayrotate@main
       heathcliff26/kube-upgrade@main
       heathcliff26/minecraft-exporter@main
       heathcliff26/netrouse@main

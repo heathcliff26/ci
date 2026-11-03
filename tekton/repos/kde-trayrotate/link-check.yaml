@@ -1,0 +1,20 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: kde-trayrotate-link-check
+  namespace: tekton-ci
+spec:
+  schedule: "22 0 * * 0"
+  timeZone: "Europe/Berlin"
+  jobTemplate:
+    spec:
+      # Delete the job after 24h to free up resources.
+      ttlSecondsAfterFinished: 86400
+      template:
+        spec:
+          containers:
+          - name: curl
+            image: quay.io/curl/curl:8.23.0
+            args: ["curl", "-X", "POST", "--data", '{"pipeline": "link-check", "repo": "kde-trayrotate", "exclude-paths": "vendor"}', "el-cron.tekton-ci.svc.cluster.local:8080"]
+          restartPolicy: Never

@@ -15,6 +15,7 @@ resources:
   - golang-copr/
   - infra/
   - infraspace-savegame-editor/
+  - kde-trayrotate/
   - kube-upgrade/
   - minecraft-exporter/
   - netrouse/

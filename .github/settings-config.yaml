@@ -11,6 +11,7 @@ rules:
         - heathcliff26/go-minesweeper
         - heathcliff26/godialog
         - heathcliff26/infraspace-savegame-editor
+        - heathcliff26/kde-trayrotate
         - heathcliff26/kube-upgrade
         - heathcliff26/minecraft-exporter
         - heathcliff26/netrouse
