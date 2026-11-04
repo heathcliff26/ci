@@ -22,7 +22,7 @@ on:
         description: The type of machine to run the job on
         type: string
         required: false
-        default: ubuntu-latest
+        default: ubuntu-26.04
 
 jobs:
   prune:
