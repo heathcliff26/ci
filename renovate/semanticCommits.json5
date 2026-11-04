@@ -4,35 +4,35 @@
     {
       "matchDatasources": ["helm"],
       "matchUpdateTypes": ["major"],
-      "commitMessagePrefix": "feat(helm)!: "
+      "commitMessagePrefix": "fix(helm)!: "
     },
     {
       "matchDatasources": ["helm"],
       "matchUpdateTypes": ["minor"],
-      "semanticCommitType": "feat",
+      "semanticCommitType": "fix",
       "semanticCommitScope": "helm"
     },
     {
       "matchDatasources": ["helm"],
       "matchUpdateTypes": ["patch"],
-      "semanticCommitType": "fix",
+      "semanticCommitType": "chore",
       "semanticCommitScope": "helm"
     },
     {
       "matchDatasources": ["docker"],
       "matchUpdateTypes": ["major"],
-      "commitMessagePrefix": "feat(container)!: "
+      "commitMessagePrefix": "fix(container)!: "
     },
     {
       "matchDatasources": ["docker"],
       "matchUpdateTypes": ["minor"],
-      "semanticCommitType": "feat",
+      "semanticCommitType": "fix",
       "semanticCommitScope": "container"
     },
     {
       "matchDatasources": ["docker"],
       "matchUpdateTypes": ["patch"],
-      "semanticCommitType": "fix",
+      "semanticCommitType": "chore",
       "semanticCommitScope": "container"
     },
     {
@@ -44,35 +44,35 @@
     {
       "matchDatasources": ["github-releases", "github-tags"],
       "matchUpdateTypes": ["major"],
-      "commitMessagePrefix": "feat(github-release)!: "
+      "commitMessagePrefix": "fix(github-release)!: "
     },
     {
       "matchDatasources": ["github-releases", "github-tags"],
       "matchUpdateTypes": ["minor"],
-      "semanticCommitType": "feat",
+      "semanticCommitType": "fix",
       "semanticCommitScope": "github-release"
     },
     {
       "matchDatasources": ["github-releases", "github-tags"],
       "matchUpdateTypes": ["patch"],
-      "semanticCommitType": "fix",
+      "semanticCommitType": "chore",
       "semanticCommitScope": "github-release"
     },
     {
       "matchManagers": ["github-actions"],
       "matchUpdateTypes": ["major"],
-      "commitMessagePrefix": "feat(github-action)!: "
+      "commitMessagePrefix": "fix(github-action)!: "
     },
     {
       "matchManagers": ["github-actions"],
       "matchUpdateTypes": ["minor"],
-      "semanticCommitType": "feat",
+      "semanticCommitType": "fix",
       "semanticCommitScope": "github-action"
     },
     {
       "matchManagers": ["github-actions"],
       "matchUpdateTypes": ["patch"],
-      "semanticCommitType": "fix",
+      "semanticCommitType": "chore",
       "semanticCommitScope": "github-action"
     },
     {
