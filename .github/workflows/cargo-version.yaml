@@ -10,7 +10,7 @@ on:
 
 jobs:
   extract-version:
-    runs-on: "ubuntu-latest"
+    runs-on: "ubuntu-26.04"
     outputs:
       version: ${{ steps.extract-version.outputs.version }}
     steps:

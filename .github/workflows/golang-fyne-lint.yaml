@@ -8,7 +8,7 @@ on:
         description: The os used for the runner
         type: string
         required: false
-        default: "ubuntu-latest"
+        default: "ubuntu-26.04"
       cache:
         description: Persist go-build cache between runs
         type: boolean

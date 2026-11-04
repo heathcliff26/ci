@@ -52,7 +52,7 @@ on:
 
 jobs:
   build-images:
-    runs-on: ${{ matrix.arch == 'arm64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
+    runs-on: ${{ matrix.arch == 'arm64' && 'ubuntu-26.04-arm' || 'ubuntu-26.04' }}
     strategy:
       fail-fast: false
       matrix:
@@ -159,7 +159,7 @@ jobs:
           cache-to: "${{ inputs.cache-to }}"
 
   combine-manifests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs:
       - build-images
     env:
