@@ -43,7 +43,7 @@ spec:
         export FROM="tekton@heathcliff.eu"
         export TO="heathcliff@heathcliff.eu"
 
-        curl --url "smtp://server53.webgo24.de:587" \
+        curl --url "smtps://server53.webgo24.de:465" \
               --ssl-reqd \
               --mail-from "${FROM}" \
               --mail-rcpt "${TO}" \
