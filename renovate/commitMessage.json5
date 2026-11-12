@@ -10,7 +10,7 @@
     },
     {
       "matchDatasources": ["docker"],
-      "commitMessageTopic": "image {{depName}}"
+      "commitMessageTopic": "image {{{replace '^ghcr.io\/heathcliff26\/' '' depName}}}"
     }
   ]
 }
