@@ -44,7 +44,7 @@ spec:
           mountPath: /home/runner/repo
         steps:
           - name: update
-            image: ghcr.io/heathcliff26/runner:13.7.202611060634@sha256:212c6a00ddfe426f62defcd2e842e3c91627d18f75e6b2646b3dd63312097b73
+            image: ghcr.io/heathcliff26/runner:13.7.202611102047@sha256:4554027c6dc9764aa9e349e689ecae02d4c9ae4ade5bad28e89fcf16107c04da
             timeout: 15m
             env:
               - name: REPO_DIR
