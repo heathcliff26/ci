@@ -124,6 +124,11 @@ spec:
               TMP_IMAGES=""
               IMG=ghcr.io/heathcliff26/kubernetes-schemas:latest
 
+              flux push artifact oci://ghcr.io/heathcliff26/manifests/kubernetes-schemas:latest \
+                --path="${OUTPUT_DIR}/manifests" \
+                --source="https://github.com/heathcliff26/infra" \
+                --revision="$(date +%Y-%m-%d-%H%M)"
+
               for arch in amd64 arm64; do
                 podman build --platform="linux/${arch}" -t "${IMG}-${arch}" .
                 podman push "${IMG}-${arch}"
