@@ -36,7 +36,7 @@ on:
         default: coverprofile.out
 
 jobs:
-  unit-tests:
+  test:
     runs-on: "${{ inputs.os }}"
     steps:
       - name: Checkout
