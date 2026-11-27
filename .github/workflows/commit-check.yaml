@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0
 
       - name: Commit Check
-        uses: commit-check/commit-check-action@3d46238970102271c989e85c58f22748a923384c # v2.24.1
+        uses: commit-check/commit-check-action@b42dca628bf1212c292cfb18a13dcf9bef2ce6e2 # v2.25.0
         with:
           message: true
           branch: false
