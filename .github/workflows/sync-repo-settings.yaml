@@ -44,7 +44,7 @@ jobs:
           token: "${{ steps.app-token.outputs.token }}"
 
       - name: Sync Settings
-        uses: joshjohanning/bulk-github-repo-settings-sync-action@9858824f2b9a1c9da959a4dd542338d4661b4feb # v2.16.0
+        uses: joshjohanning/bulk-github-repo-settings-sync-action@1cfce57399b9703925002719b895835b9edb97fe # v2.17.0
         with:
           github-token: "${{ steps.app-token.outputs.token }}"
           repositories-file: ".github/settings-config.yaml"
