@@ -11,7 +11,7 @@ jobs:
       pull-requests: read
     steps:
       - name: Check labels
-        uses: agilepathway/label-checker@68dd5b44cb692363bca246a60840bed28b901f18 # v2.0.87
+        uses: agilepathway/label-checker@18a4910df085c928716d17d5251e61b8b28f980f # v2.0.90
         with:
           repo_token: ${{ github.token }}
           none_of: do-not-merge,hold
