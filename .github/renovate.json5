@@ -18,6 +18,7 @@
     'helpers:pinGitHubActionDigests',
   ],
   assigneesFromCodeOwners: true,
+  configMigration: true,
   dependencyDashboard: {
     title: 'Renovate Dashboard 🤖',
   },
