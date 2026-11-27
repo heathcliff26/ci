@@ -16,6 +16,7 @@ on:
       - .editorconfig
       - .vscode/*
       - .golangci.yml
+      - renovate/configs/*
 
 jobs:
   sync:
