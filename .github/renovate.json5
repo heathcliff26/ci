@@ -1,33 +1,37 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended",
-    "docker:enableMajor",
-    ":disableRateLimiting",
-    ":dependencyDashboard",
-    ":semanticCommits",
-    ":automergeDigest",
-    ":automergeBranch",
-    "github>heathcliff26/ci//renovate/automerge-gh-actions-branch.json5",
-    "github>heathcliff26/ci//renovate/commitMessage.json5",
-    "github>heathcliff26/ci//renovate/customManagers.json5",
-    "github>heathcliff26/ci//renovate/labels.json5",
-    "github>heathcliff26/ci//renovate/semanticCommits.json5",
-    "github>heathcliff26/ci//.github/renovate/automerge.json5",
-    "github>heathcliff26/ci//.github/renovate/group.json5",
-    "helpers:pinGitHubActionDigests"
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'config:recommended',
+    'docker:enableMajor',
+    ':disableRateLimiting',
+    ':dependencyDashboard',
+    ':semanticCommits',
+    ':automergeDigest',
+    ':automergeBranch',
+    'github>heathcliff26/ci//renovate/automerge-gh-actions-branch.json5',
+    'github>heathcliff26/ci//renovate/commitMessage.json5',
+    'github>heathcliff26/ci//renovate/customManagers.json5',
+    'github>heathcliff26/ci//renovate/labels.json5',
+    'github>heathcliff26/ci//renovate/semanticCommits.json5',
+    'github>heathcliff26/ci//.github/renovate/automerge.json5',
+    'github>heathcliff26/ci//.github/renovate/group.json5',
+    'helpers:pinGitHubActionDigests',
   ],
-  "assigneesFromCodeOwners": true,
-  "dependencyDashboardTitle": "Renovate Dashboard 🤖",
-  "suppressNotifications": ["prIgnoreNotification"],
-  "kubernetes": {
-    "managerFilePatterns": [
-      "/(^|/)tekton/.+\\.ya?ml(\\.j2)?$/"
-    ]
+  assigneesFromCodeOwners: true,
+  dependencyDashboard: {
+    title: 'Renovate Dashboard 🤖',
   },
-  "tekton": {
-    "managerFilePatterns": [
-      "/(^|/)tekton/.+\\.ya?ml(\\.j2)?$/"
-    ]
-  }
+  suppressNotifications: [
+    'prIgnoreNotification',
+  ],
+  kubernetes: {
+    managerFilePatterns: [
+      '/(^|/)tekton/.+\\.ya?ml(\\.j2)?$/',
+    ],
+  },
+  tekton: {
+    managerFilePatterns: [
+      '/(^|/)tekton/.+\\.ya?ml(\\.j2)?$/',
+    ],
+  },
 }
