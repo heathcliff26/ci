@@ -1,32 +1,50 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "packageRules": [
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  packageRules: [
     {
-      "description": "Auto merge rust build container",
-      "matchDatasources": ["docker"],
-      "automerge": true,
-      "automergeType": "pr",
-      "matchUpdateTypes": ["digest", "patch", "minor"],
-      "matchPackagePatterns": ["docker.io/library/rust"],
+      description: 'Auto merge rust build container',
+      matchDatasources: [
+        'docker',
+      ],
+      automerge: true,
+      automergeType: 'pr',
+      matchUpdateTypes: [
+        'digest',
+        'patch',
+        'minor',
+      ],
+      matchPackageNames: [
+        '/docker.io/library/rust/',
+      ],
     },
     {
-      "description": "Auto merge alpine base images",
-      "matchDatasources": ["docker"],
-      "automerge": true,
-      "automergeType": "pr",
-      "matchUpdateTypes": ["digest", "patch", "minor"],
-      "matchPackagePatterns": ["docker.io/library/alpine"],
+      description: 'Auto merge alpine base images',
+      matchDatasources: [
+        'docker',
+      ],
+      automerge: true,
+      automergeType: 'pr',
+      matchUpdateTypes: [
+        'digest',
+        'patch',
+        'minor',
+      ],
+      matchPackageNames: [
+        '/docker.io/library/alpine/',
+      ],
     },
     {
-      "description": "Auto merge builder",
-      "matchDatasources": ["docker"],
-      "automerge": true,
-      "automergeType": "pr",
-      "matchPackageNames": [
-        "ghcr.io/heathcliff26/rust-builder",
-        "ghcr.io/heathcliff26/rust-qt-builder",
-        ],
-      "maxMajorIncrement": 0,
+      description: 'Auto merge builder',
+      matchDatasources: [
+        'docker',
+      ],
+      automerge: true,
+      automergeType: 'pr',
+      matchPackageNames: [
+        'ghcr.io/heathcliff26/rust-builder',
+        'ghcr.io/heathcliff26/rust-qt-builder',
+      ],
+      maxMajorIncrement: 0,
     },
-  ]
+  ],
 }

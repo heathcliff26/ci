@@ -1,29 +1,48 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "packageRules": [
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  packageRules: [
     {
-      "description": "Auto merge golang build container",
-      "matchDatasources": ["docker"],
-      "automerge": true,
-      "automergeType": "pr",
-      "matchUpdateTypes": ["digest", "patch"],
-      "matchPackagePatterns": ["docker.io/library/golang"],
+      description: 'Auto merge golang build container',
+      matchDatasources: [
+        'docker',
+      ],
+      automerge: true,
+      automergeType: 'pr',
+      matchUpdateTypes: [
+        'digest',
+        'patch',
+      ],
+      matchPackageNames: [
+        '/docker.io/library/golang/',
+      ],
     },
     {
-      "description": "Auto merge alpine base images",
-      "matchDatasources": ["docker"],
-      "automerge": true,
-      "automergeType": "pr",
-      "matchUpdateTypes": ["digest", "patch", "minor"],
-      "matchPackagePatterns": ["docker.io/library/alpine"],
+      description: 'Auto merge alpine base images',
+      matchDatasources: [
+        'docker',
+      ],
+      automerge: true,
+      automergeType: 'pr',
+      matchUpdateTypes: [
+        'digest',
+        'patch',
+        'minor',
+      ],
+      matchPackageNames: [
+        '/docker.io/library/alpine/',
+      ],
     },
     {
-      "description": "Auto merge go-fyne-ci",
-      "matchDatasources": ["docker"],
-      "automerge": true,
-      "automergeType": "pr",
-      "matchPackageNames": ["ghcr.io/heathcliff26/go-fyne-ci"],
-      "maxMajorIncrement": 0,
+      description: 'Auto merge go-fyne-ci',
+      matchDatasources: [
+        'docker',
+      ],
+      automerge: true,
+      automergeType: 'pr',
+      matchPackageNames: [
+        'ghcr.io/heathcliff26/go-fyne-ci',
+      ],
+      maxMajorIncrement: 0,
     },
-  ]
+  ],
 }

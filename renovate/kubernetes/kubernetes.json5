@@ -1,11 +1,13 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "packageRules": [
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  packageRules: [
     {
-      "description": "Create separate PRs for minor and patch releases",
-      "matchPackagePatterns": ["kubernetes/kubernetes"],
-      "separateMinorPatch": true,
-      "enabled": true,
+      description: 'Create separate PRs for minor and patch releases',
+      separateMinorPatch: true,
+      enabled: true,
+      matchPackageNames: [
+        '/kubernetes/kubernetes/',
+      ],
     },
-  ]
+  ],
 }

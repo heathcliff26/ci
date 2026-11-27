@@ -1,21 +1,39 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "packageRules": [
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  packageRules: [
     {
-      "groupName": "github actions",
-      "groupSlug": "github-actions",
-      "matchManagers": ["github-actions"],
-      "matchDatasources": ["github-tags"],
-      "matchPackagePatterns": ["github/*"],
-      "matchUpdateTypes": ["minor", "patch"]
+      groupName: 'github actions',
+      groupSlug: 'github-actions',
+      matchManagers: [
+        'github-actions',
+      ],
+      matchDatasources: [
+        'github-tags',
+      ],
+      matchUpdateTypes: [
+        'minor',
+        'patch',
+      ],
+      matchPackageNames: [
+        '/github/*/',
+      ],
     },
     {
-      "groupName": "docker actions",
-      "groupSlug": "docker-actions",
-      "matchManagers": ["github-actions"],
-      "matchDatasources": ["github-tags"],
-      "matchPackagePatterns": ["docker/*"],
-      "matchUpdateTypes": ["minor", "patch"]
-    }
-  ]
+      groupName: 'docker actions',
+      groupSlug: 'docker-actions',
+      matchManagers: [
+        'github-actions',
+      ],
+      matchDatasources: [
+        'github-tags',
+      ],
+      matchUpdateTypes: [
+        'minor',
+        'patch',
+      ],
+      matchPackageNames: [
+        '/docker/*/',
+      ],
+    },
+  ],
 }

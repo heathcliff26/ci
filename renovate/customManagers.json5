@@ -1,38 +1,38 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "customManagers": [
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  customManagers: [
     {
-      "customType": "regex",
-      "description": "Extract Dockerfile dependencies from Enviroment Variables",
-      "fileMatch": [
-        "(^|/)Dockerfile$",
-        "(^|/)Dockerfile\\.[^/]*$"
+      customType: 'regex',
+      description: 'Extract Dockerfile dependencies from Enviroment Variables',
+      managerFilePatterns: [
+        '/(^|/)Dockerfile$/',
+        '/(^|/)Dockerfile\\.[^/]*$/',
       ],
-      "matchStrings": [
-        "#\\srenovate:\\sdatasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?( extractVersion=(?<extractVersion>.*?))?\\s(ENV|ARG) .*?_VERSION=(?<currentValue>.*)\\s"
+      matchStrings: [
+        '#\\srenovate:\\sdatasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?( extractVersion=(?<extractVersion>.*?))?\\s(ENV|ARG) .*?_VERSION=(?<currentValue>.*)\\s',
       ],
     },
     {
-      "customType": "regex",
-      "description": "Process docker:// actions for github workflow",
-      "fileMatch": [
-        ".github/workflows/.+\\.ya?ml$",
+      customType: 'regex',
+      description: 'Process docker:// actions for github workflow',
+      managerFilePatterns: [
+        '/.github/workflows/.+\\.ya?ml$/',
       ],
-      "matchStrings": [
-        "uses: docker://(?<depName>.*?):(?<currentValue>.*)"
+      matchStrings: [
+        'uses: docker://(?<depName>.*?):(?<currentValue>.*)',
       ],
-      "datasourceTemplate": "docker",
+      datasourceTemplate: 'docker',
     },
     {
-      "customType": "regex",
-      "description": "Extract dependencies from variables in shell scripts",
-      "fileMatch": [
-        "(^|/).+\\.sh$",
-        "(^|/)containerized$"
+      customType: 'regex',
+      description: 'Extract dependencies from variables in shell scripts',
+      managerFilePatterns: [
+        '/(^|/).+\\.sh$/',
+        '/(^|/)containerized$/',
       ],
-      "matchStrings": [
-        "#\\srenovate:\\sdatasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?( extractVersion=(?<extractVersion>.*?))?\\s(export )?.*?_VERSION=(?<currentValue>.*)\\s"
+      matchStrings: [
+        '#\\srenovate:\\sdatasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?( extractVersion=(?<extractVersion>.*?))?\\s(export )?.*?_VERSION=(?<currentValue>.*)\\s',
       ],
     },
-  ]
+  ],
 }
